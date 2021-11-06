@@ -1,4 +1,4 @@
-# safety-vision-iu
+# safety-vision-ui
 
 Build the Docker image:
 ```
