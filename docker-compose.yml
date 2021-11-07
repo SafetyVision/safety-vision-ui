@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  ui:
+    image: safety-vision-platform_ui-local
+    command: npm start
+    environment:
+      CHOKIDAR_USEPOLLING: true
+    volumes:
+      - .:/code
+    ports:
+      - 3000:3000
