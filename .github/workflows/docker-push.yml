@@ -1,0 +1,19 @@
+name: Push Docker Image
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag safetyvision/safety-vision-ui:latest
+    - name: Login to Docker
+      env:
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      run: docker login --username safetyvision --password $DOCKER_PASSWORD
+    - name: Push Docker image
+      run: docker push safetyvision/safety-vision-ui:latest
