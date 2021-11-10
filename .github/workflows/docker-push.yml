@@ -25,7 +25,8 @@ jobs:
         aws-region: ${{ secrets.AWS_REGION }}
     - name: Build React App
       run: |
-        docker-compose -f docker-compose.build.yml build
-        docker-compose -f docker-compose.build.yml up
+        docker create -ti --name builder safetyvision/safety-vision-ui bash
+        docker cp builder:/code/build ./
+        docker rm -f builder
     - name: Deploy app build to S3 bucket
       run: aws s3 sync ./build/ s3://safety-vision-ui --delete
