@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   ui:
-    image: safety-vision-platform_ui-local
+    image: safetyvision/safety-vision-ui:latest
     environment:
       - CHOKIDAR_USEPOLLING=true
     volumes:

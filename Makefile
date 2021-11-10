@@ -3,6 +3,7 @@ build:
 
 up:
 	docker-compose up
+	docker-compose exec ui npm start
 
 down:
 	docker-compose down
