@@ -3,6 +3,7 @@ version: "3.9"
 services:
   ui:
     image: safetyvision/safety-vision-ui:latest
+    command: npm run build
     environment:
       - CHOKIDAR_USEPOLLING=true
     volumes:
