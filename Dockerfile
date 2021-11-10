@@ -1,6 +1,7 @@
 FROM node:16.13.0-slim
 WORKDIR /code
-COPY . /code/
-COPY package.json /code/
+COPY package*.json .
 RUN npm install
+COPY . .
 RUN npm run build
+EXPOSE 3000
