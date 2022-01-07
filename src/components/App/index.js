@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
-import './App.css';
-// Notice we're importing from the file we created, not the axios package
-import axios from './axiosConfig';
+import { Component } from 'react';
+import axios from 'util/axiosConfig';
+
 export default class App extends Component {
   constructor(props){
     super(props)
