@@ -1,5 +1,10 @@
 # safety-vision-ui
 
+The first time you pull the repo run:
+```
+make setup
+```
+
 To build the Docker image:
 ```
 make build
