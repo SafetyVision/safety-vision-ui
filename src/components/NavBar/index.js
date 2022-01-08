@@ -11,6 +11,7 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import logo from 'assets/logo.png';
+import axios from 'util/axiosConfig';
 
 export default function NavBar({
   authInfo,
@@ -18,7 +19,12 @@ export default function NavBar({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
-  const logout = () => setIsAuthenticated(false);
+
+  const logout = () => {
+    axios.post('/api/logout/', {}).then(() => {
+      setIsAuthenticated(false);
+    });
+  };
 
   const unauthenticatedNavBar = [
     {
