@@ -1,58 +1,47 @@
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'util/axiosConfig';
+import DashboardPage from 'pages/DashboardPage';
+import getCookie from 'util/cookies';
+import HomePage from 'pages/HomePage';
+import LoginPage from 'pages/LoginPage';
+import NavBar from 'components/NavBar';
+import SignUpPage from 'pages/SignUpPage';
+import RequireAuth from 'components/RequireAuth';
+import { Routes, Route } from 'react-router-dom';
 
-export default class App extends Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      username: '',
-      password: '',
-      auth: null,
-      endpoint: null
-    }
-  }
-  setCSRF = () => {
-    axios.get('api/set-csrf/').then(res => console.log(res))
-  }
-  handleChange = (e) => {
-    this.setState({[e.target.name]: e.target.value})
-  }
-  handleSubmit = (event) => {
-    event.preventDefault();
-    axios.post(
-      '/api/login/',
-      {
-        username: this.state.username,
-        password: this.state.password
-      }).then(res => {
-        this.setState({auth: true})
-      }).catch(res => this.setState({auth: false}))
-  }
-  testEndpoint = () => {
-    axios.get('/api/test-auth/').then(res => this.setState({endpoint: true}))
-      .catch(res => this.setState({endpoint: false}))
-  }
-  render() {
-    return (
-      <div style={{marginLeft: '20px'}}>
-        <div style={{height: '50px'}}></div>
-        <button onClick={this.setCSRF}>Set CSRF Token</button>
-        <div style={{height: '50px'}}></div>
-        <form onSubmit={this.handleSubmit}>
-          <label>Username</label>
-          <input name='username' value={this.state.username} onChange={this.handleChange}></input>
-          <label >Password</label>
-          <input name='password' value={this.state.password} onChange={this.handleChange}></input>
-          <input type='submit' value='Login'></input>
-        </form>
-        <div style={{height: '50px'}}></div>
-        <div>
-          {this.state.auth === null ? '' : (this.state.auth ? 'Login successful' : 'Login Failed' )}
-        </div>
-        <div style={{height: '50px'}}></div>
-        <button onClick={this.testEndpoint}>Test Endpoint</button>
-        <div>{this.state.endpoint === null ? '' : (this.state.endpoint ? 'Successful Request' : 'Request Rejected')}</div>
-      </div>
-    )
+export default function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const isExistingUser = getCookie('sessionid') === null;
+  const authInfo = {
+    isAuthenticated,
+    isExistingUser,
   };
+
+  useEffect(() => {
+    axios.get('api/set-csrf/');
+    axios.get('/api/test-auth/').then(() => setIsAuthenticated(true))
+      .catch(() => setIsAuthenticated(false));
+  }, []);
+
+  return (
+    <div>
+      <div>
+        <NavBar authInfo={authInfo} />
+      </div>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              isAuthenticated ? (
+                <RequireAuth authInfo={authInfo}>
+                  <DashboardPage />
+                </RequireAuth>
+              ) : <HomePage authInfo={authInfo} />
+            }
+          />
+          <Route path="login" element={<LoginPage authInfo={authInfo} setIsAuthenticated={setIsAuthenticated} />} />
+          <Route path="signup" element={<SignUpPage authInfo={authInfo} />} />
+        </Routes>
+    </div>
+  );
 }
