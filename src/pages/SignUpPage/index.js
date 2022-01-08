@@ -10,9 +10,12 @@ import {
   ToastBody,
 } from 'reactstrap';
 import axios from 'util/axiosConfig';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 
-export default function SignUpPage({ setIsAuthenticated }) {
+export default function SignUpPage({
+  authInfo,
+  setIsAuthenticated,
+}) {
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState({ header: null, body: () => null });
   const [email, setEmail] = useState('');
@@ -22,8 +25,8 @@ export default function SignUpPage({ setIsAuthenticated }) {
   const [account_name, setAccountName] = useState('');
 
   const createAccount = () => {
-    axios.post('/api/accounts/register/', {
-      account_name,
+    axios.post('/api/accounts/register', {
+      account_name: account_name.trim(),
       login_identifier: account_name.toLowerCase(),
       users: [
         {
@@ -34,7 +37,7 @@ export default function SignUpPage({ setIsAuthenticated }) {
         }
       ],
     }).then(() => {
-      axios.post('/api/login', {
+      axios.post('/api/login/', {
         username: email,
         password,
       }).then(() => {
@@ -57,6 +60,10 @@ export default function SignUpPage({ setIsAuthenticated }) {
       setPassword('');
     });
   };
+
+  if (authInfo.isAuthenticated) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <div className="mx-auto" style={{ 'max-width': '500px' }}>
@@ -81,7 +88,7 @@ export default function SignUpPage({ setIsAuthenticated }) {
             name="account_name"
             placeholder="Your company/organization"
             value={account_name}
-            onChange={(e) => setAccountName(e.target.value.trim())}
+            onChange={(e) => setAccountName(e.target.value)}
           />
         </FormGroup>
         <FormGroup className="pt-3">
