@@ -62,7 +62,7 @@ export default function App() {
               />
             }
           />
-          <Route path="signup" element={<SignUpPage setIsAuthenticated={setIsAuthenticated}/>} />
+          <Route path="signup" element={<SignUpPage setIsAuthenticated={setIsAuthenticated} authInfo={authInfo} />} />
         </Routes>
       </Container>
     </div>

@@ -20,11 +20,25 @@ export default function SignUpPage({
   const [error, setError] = useState({ header: null, body: () => null });
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [first_name, setFirstName] = useState('');
   const [last_name, setLastName] = useState('');
   const [account_name, setAccountName] = useState('');
 
   const createAccount = () => {
+    if (password !== confirmPassword) {
+      setIsError(true);
+      setPassword('');
+      setConfirmPassword('');
+      setError({
+        header: 'Passwords Do Not Match',
+        body: () => (
+          <p>Your passwords did not match. Reenter your password and try again.</p>
+        )
+      });
+
+      return;
+    }
     axios.post('/api/accounts/register', {
       account_name: account_name.trim(),
       login_identifier: account_name.toLowerCase(),
@@ -50,6 +64,8 @@ export default function SignUpPage({
             <p>Your account has successfully been created, but log in failed. Try logging in <Link to="/login">here</Link>.</p>
           ),
         })
+        setPassword('');
+        setConfirmPassword('');
       });
     }).catch(() => {
       setIsError(true);
@@ -58,6 +74,7 @@ export default function SignUpPage({
         body: () => (<p>Failed to create this account. Try again.</p>),
       });
       setPassword('');
+      setConfirmPassword('');
     });
   };
 
@@ -139,6 +156,19 @@ export default function SignUpPage({
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label>
+            Password
+          </Label>
+          <Input
+            id="confirmPassword"
+            name="confirmPassword"
+            placeholder="Confirm password"
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </FormGroup>
         <Button color="primary" onClick={createAccount} className="mx-auto">
