@@ -8,11 +8,12 @@ import NavBar from 'components/NavBar';
 import SignUpPage from 'pages/SignUpPage';
 import RequireAuth from 'components/RequireAuth';
 import { Routes, Route } from 'react-router-dom';
-import { Container } from 'reactstrap';
+import { Container, Spinner } from 'reactstrap';
 
 export default function App() {
+  const [isLoaded, setIsLoaded] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const isExistingUser = getCookie('sessionid') === null;
+  const isExistingUser = getCookie('sessionid') !== null;
   const authInfo = {
     isAuthenticated,
     isExistingUser,
@@ -22,12 +23,20 @@ export default function App() {
     axios.get('api/set-csrf/');
     axios.get('/api/test-auth/').then(() => setIsAuthenticated(true))
       .catch(() => setIsAuthenticated(false));
+    setIsLoaded(true);
   }, []);
+
+  if (!isLoaded) {
+    return <Spinner />
+  }
 
   return (
     <div>
       <div>
-        <NavBar authInfo={authInfo} />
+        <NavBar
+          authInfo={authInfo}
+          setIsAuthenticated={setIsAuthenticated}
+        />
       </div>
       <Container className="pt-5 h-100">
         <Routes>
@@ -41,7 +50,13 @@ export default function App() {
               ) : <HomePage authInfo={authInfo} />
             }
           />
-          <Route path="login" element={<LoginPage authInfo={authInfo} setIsAuthenticated={setIsAuthenticated} />} />
+          <Route path="login" element={
+              <LoginPage
+                authInfo={authInfo}
+                setIsAuthenticated={setIsAuthenticated}
+              />
+            }
+          />
           <Route path="signup" element={<SignUpPage authInfo={authInfo} />} />
         </Routes>
       </Container>
