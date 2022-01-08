@@ -8,6 +8,7 @@ import NavBar from 'components/NavBar';
 import SignUpPage from 'pages/SignUpPage';
 import RequireAuth from 'components/RequireAuth';
 import { Routes, Route } from 'react-router-dom';
+import { Container } from 'reactstrap';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -28,6 +29,7 @@ export default function App() {
       <div>
         <NavBar authInfo={authInfo} />
       </div>
+      <Container className="pt-5 h-100">
         <Routes>
           <Route
             path="/"
@@ -42,6 +44,7 @@ export default function App() {
           <Route path="login" element={<LoginPage authInfo={authInfo} setIsAuthenticated={setIsAuthenticated} />} />
           <Route path="signup" element={<SignUpPage authInfo={authInfo} />} />
         </Routes>
+      </Container>
     </div>
   );
 }
