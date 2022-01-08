@@ -7,7 +7,7 @@ import {
   Nav,
   NavItem,
   NavLink,
-  NavbarText,
+  Button,
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import logo from 'assets/logo.png';
@@ -57,7 +57,7 @@ export default function NavBar({
       </NavbarBrand>
       <NavbarToggler className="me-2" onClick={toggle} />
       <Collapse isOpen={isOpen} navbar>
-        <Nav navbar>
+        <Nav navbar className="me-auto">
           {navBar.map((navItem) => (
             <NavItem>
               <NavLink tag={Link} to={navItem.href}>
@@ -66,9 +66,14 @@ export default function NavBar({
             </NavItem>
           ))}
         </Nav>
-        <NavbarText onClick={logout}>
-          Logout
-        </NavbarText>
+        {
+          authInfo.isAuthenticated && (
+
+            <Button onClick={logout}>
+              Logout
+            </Button>
+          )
+        }
       </Collapse>
     </Navbar>
   );
