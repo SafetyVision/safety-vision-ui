@@ -13,7 +13,7 @@ import { Container, Spinner } from 'reactstrap';
 export default function App() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const isExistingUser = getCookie('sessionid') === null;
+  const isExistingUser = getCookie('sessionid') !== null;
   const authInfo = {
     isAuthenticated,
     isExistingUser,
@@ -33,7 +33,10 @@ export default function App() {
   return (
     <div>
       <div>
-        <NavBar authInfo={authInfo} />
+        <NavBar
+          authInfo={authInfo}
+          setIsAuthenticated={setIsAuthenticated}
+        />
       </div>
       <Container className="pt-5 h-100">
         <Routes>

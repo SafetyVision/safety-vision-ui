@@ -7,13 +7,18 @@ import {
   Nav,
   NavItem,
   NavLink,
+  NavbarText,
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import logo from 'assets/logo.png';
 
-export default function NavBar({authInfo}) {
+export default function NavBar({
+  authInfo,
+  setIsAuthenticated,
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
+  const logout = () => setIsAuthenticated(false);
 
   const unauthenticatedNavBar = [
     {
@@ -52,9 +57,7 @@ export default function NavBar({authInfo}) {
       </NavbarBrand>
       <NavbarToggler className="me-2" onClick={toggle} />
       <Collapse isOpen={isOpen} navbar>
-        <Nav
-          navbar
-        >
+        <Nav navbar>
           {navBar.map((navItem) => (
             <NavItem>
               <NavLink tag={Link} to={navItem.href}>
@@ -63,6 +66,9 @@ export default function NavBar({authInfo}) {
             </NavItem>
           ))}
         </Nav>
+        <NavbarText onClick={logout}>
+          Logout
+        </NavbarText>
       </Collapse>
     </Navbar>
   );
