@@ -21,9 +21,14 @@ export default function App() {
 
   useEffect(() => {
     axios.get('api/set-csrf/');
-    axios.get('/api/test-auth/').then(() => setIsAuthenticated(true))
-      .catch(() => setIsAuthenticated(false));
-    setIsLoaded(true);
+    axios.get('/api/test-auth/').then(() => {
+      setIsAuthenticated(true);
+      setIsLoaded(true);
+    })
+    .catch(() => {
+      setIsAuthenticated(false);
+      setIsLoaded(true);
+    });
   }, []);
 
   if (!isLoaded) {
@@ -38,7 +43,7 @@ export default function App() {
           setIsAuthenticated={setIsAuthenticated}
         />
       </div>
-      <Container className="pt-5 h-100">
+      <Container className="pt-5 h-100 px-4">
         <Routes>
           <Route
             path="/"
@@ -57,7 +62,7 @@ export default function App() {
               />
             }
           />
-          <Route path="signup" element={<SignUpPage authInfo={authInfo} />} />
+          <Route path="signup" element={<SignUpPage setIsAuthenticated={setIsAuthenticated}/>} />
         </Routes>
       </Container>
     </div>

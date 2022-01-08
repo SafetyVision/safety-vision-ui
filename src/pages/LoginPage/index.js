@@ -29,8 +29,8 @@ export default function LoginPage({
         setIsAuthenticated(true);
       }).catch(() => {
         setIsError(true);
+        setPassword('');
       });
-    setPassword('');
   }
 
   if (authInfo.isAuthenticated) {
