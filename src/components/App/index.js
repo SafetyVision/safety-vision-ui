@@ -66,7 +66,7 @@ export default function App() {
               <Route path="add" element={<CreateUserPage />} />
               <Route path=":userId/edit" element={<UpdateUserPage />} />
               <Route path=":userId/view" element={<ViewUserPage />} />
-              <Route index element={<ListUsersPage />} />
+              <Route index element={<ListUsersPage authInfo={authInfo} />} />
             </Route>
           </Route>
         </Routes>
