@@ -42,6 +42,10 @@ export default function NavBar({
       text: 'Dashboard',
       href: '/',
     },
+    {
+      text: 'User and Account Management',
+      href: '/account',
+    },
   ];
 
   let navBar = unauthenticatedNavBar;
@@ -65,7 +69,7 @@ export default function NavBar({
       <Collapse isOpen={isOpen} navbar>
         <Nav navbar className="me-auto">
           {navBar.map((navItem) => (
-            <NavItem>
+            <NavItem key={navItem.href}>
               <NavLink tag={Link} to={navItem.href}>
                 {navItem.text}
               </NavLink>
