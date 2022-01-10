@@ -77,7 +77,7 @@ export default function LoginPage({
             onChange={(e) => setPassword(e.target.value)}
           />
         </FormGroup>
-        <Button color="primary" onClick={login}>
+        <Button color="primary" onClick={login} className="w-100">
           Log In
         </Button>
       </Form>
