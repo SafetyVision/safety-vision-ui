@@ -31,23 +31,22 @@ export default function ListUsersPage({ authInfo }) {
       <td className="align-middle">
         {user.email}
       </td>
-      <td className="text-end">
+      <td className="text-end align-middle">
         <Button className="w-100" color="primary" tag={Link} to={`/account/users/${user.id}/view`}>
           View
         </Button>
       </td>
-      <td className="text-end">
-        <Button className="mx-1 w-100" tag={Link} to={`/account/users/${user.id}/edit`}>
-          Edit
-        </Button>
-      </td>
-      <td className="text-end">
+      <td className="text-end align-middle">
         {
           user.id !== authInfo.currentUser.id ? (
             <Button color="danger" onClick={() => deleteUser(user.id)} className="w-100">
               Delete
             </Button>
-          ) : null
+          ) : (
+            <Button className="mx-1 w-100" tag={Link} to={`/account/users/${user.id}/edit`}>
+              Edit
+            </Button>
+          )
         }
       </td>
     </tr>
@@ -55,8 +54,8 @@ export default function ListUsersPage({ authInfo }) {
 
   return (
     <div>
-      <div className="d-flex justify-content-between align-items-center">
-        <h1 className="fw-bold pb-4">Users List</h1>
+      <div className="d-flex justify-content-between align-items-center pb-4">
+        <h1 className="fw-bold">Users List</h1>
         <Button tag={Link} to="/account/users/add" color="primary" className="h" >
           Add User
         </Button>
@@ -70,9 +69,8 @@ export default function ListUsersPage({ authInfo }) {
               <th>Email</th>
               <th />
               <th />
-              <th />
             </thead>
-            <tbody>
+            <tbody className="border-top border-bottom">
               {users.map(mapUserToTableRow)}
             </tbody>
           </Table>
