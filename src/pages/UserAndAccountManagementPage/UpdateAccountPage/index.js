@@ -3,7 +3,7 @@ import axios from 'util/axiosConfig';
 import { Button, Form, FormGroup, Label, Input, Toast, ToastBody, ToastHeader } from 'reactstrap';
 
 export default function UpdateAccountPage({ authInfo }) {
-  const [accountName, setAccountName] = useState(null);
+  const [accountName, setAccountName] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {

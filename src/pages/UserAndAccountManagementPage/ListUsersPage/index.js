@@ -64,11 +64,13 @@ export default function ListUsersPage({ authInfo }) {
         users ? (
           <Table striped borderless responsive>
             <thead>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Email</th>
-              <th />
-              <th />
+              <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th />
+                <th />
+              </tr>
             </thead>
             <tbody className="border-top border-bottom">
               {users.map(mapUserToTableRow)}
