@@ -84,7 +84,7 @@ export default function SignUpPage({
 
   return (
     <div className="mx-auto" style={{ 'max-width': '500px' }}>
-           <Toast isOpen={isError} className="w-100 mb-3">
+      <Toast isOpen={isError} className="w-100 mb-3">
         <ToastHeader toggle={() => setIsError(false)}>
           {error.header}
         </ToastHeader>
@@ -160,7 +160,7 @@ export default function SignUpPage({
         </FormGroup>
         <FormGroup>
           <Label>
-            Password
+            Confirm Password
           </Label>
           <Input
             id="confirmPassword"

@@ -18,7 +18,7 @@ export default function LoginPage({
 }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [isError, setIsError] = useState('');
+  const [isError, setIsError] = useState(false);
 
   const login = () => {
     axios.post(
@@ -38,7 +38,7 @@ export default function LoginPage({
   }
 
   return (
-    <div className="mx-auto" style={{ 'max-width': '500px' }}>
+    <div className="mx-auto" style={{ 'maxWidth': '500px' }}>
       <Toast isOpen={isError} className="w-100 mb-3">
         <ToastHeader toggle={() => setIsError(false)}>
           Log In Failed
