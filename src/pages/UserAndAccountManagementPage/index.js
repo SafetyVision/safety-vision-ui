@@ -1,7 +1,14 @@
 import { Button, Row } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import axios from 'util/axiosConfig';
 
-export default function UserAndAccountManagementPage() {
+export default function UserAndAccountManagementPage({ authInfo, setIsAuthenticated }) {
+  const deleteAccount = () => {
+    axios.delete(`/api/accounts/${authInfo.currentUser.account}`).then(() => {
+      setIsAuthenticated(false);
+    });
+  };
+
   return (
     <div>
       <h1 className="pb-3">
@@ -29,7 +36,7 @@ export default function UserAndAccountManagementPage() {
         </Button>
       </Row>
       <Row>
-        <Button onClick={() => {}} color="danger" className="mx-auto my-2" style={{ maxWidth: '500px' }}>
+        <Button onClick={deleteAccount} color="danger" className="mx-auto my-2" style={{ maxWidth: '500px' }}>
           Delete Account
         </Button>
       </Row>

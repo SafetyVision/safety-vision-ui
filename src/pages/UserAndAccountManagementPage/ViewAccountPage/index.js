@@ -17,8 +17,14 @@ export default function ViewAccountPage({ authInfo }) {
     return (
       <div>
         <h1 className="fw-bold pb-4">Your Account</h1>
-        <h2 className="fw-bold">Company/Organization Name:</h2>
-        <h3>{accountData.account_name}</h3>
+        <div style={{ maxWidth: '500px' }} className="border rounded mx-auto p-3">
+          <label className="fw-bold pt-3">
+            Company/Organization Name
+          </label>
+          <p>
+            {accountData.account_name}
+          </p>
+        </div>
       </div>
     );
   }

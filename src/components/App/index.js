@@ -59,12 +59,12 @@ export default function App() {
             }
           />
           <Route path="account" element={<RequireAuth authInfo={authInfo}><Outlet /></RequireAuth>}>
-            <Route index element={<UserAndAccountManagementPage authInfo={authInfo} />} />
+            <Route index element={<UserAndAccountManagementPage authInfo={authInfo} setIsAuthenticated={setIsAuthenticated} />} />
             <Route path="view" element={<ViewAccountPage authInfo={authInfo} />} />
             <Route path="edit" element={<UpdateAccountPage authInfo={authInfo} />} />
             <Route path="users">
               <Route path="add" element={<CreateUserPage />} />
-              <Route path=":userId/edit" element={<UpdateUserPage />} />
+              <Route path=":userId/edit" element={<UpdateUserPage setIsAuthenticated={setIsAuthenticated} />} />
               <Route path=":userId/view" element={<ViewUserPage />} />
               <Route index element={<ListUsersPage authInfo={authInfo} />} />
             </Route>
