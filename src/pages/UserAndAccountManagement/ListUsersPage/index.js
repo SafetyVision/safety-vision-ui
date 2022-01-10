@@ -55,7 +55,7 @@ export default function ListUsersPage({ authInfo }) {
   return (
     <div>
       <div className="d-flex justify-content-between align-items-center pb-4">
-        <h1 className="fw-bold">Users List</h1>
+        <h1 className="fw-bold">User Management</h1>
         <Button tag={Link} to="/account/users/add" color="primary" className="h" >
           Add User
         </Button>

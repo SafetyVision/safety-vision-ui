@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Spinner } from 'reactstrap';
 import axios from 'util/axiosConfig';
 import { useParams } from 'react-router-dom';
+import BackButton from 'components/BackButton';
 
 export default function ViewUserPage() {
   const [user, setUser] = useState(null);
@@ -26,6 +27,7 @@ export default function ViewUserPage() {
 
   return (
    <div>
+    <BackButton to="/account/users" />
     <h1 className="fw-bold">
       View User
     </h1>

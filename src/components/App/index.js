@@ -4,13 +4,12 @@ import HomePage from 'pages/HomePage';
 import LoginPage from 'pages/LoginPage';
 import NavBar from 'components/NavBar';
 import SignUpPage from 'pages/SignUpPage';
-import UserAndAccountManagementPage from 'pages/UserAndAccountManagementPage';
-import CreateUserPage from 'pages/UserAndAccountManagementPage/CreateUserPage';
-import ListUsersPage from 'pages/UserAndAccountManagementPage/ListUsersPage';
-import UpdateAccountPage from 'pages/UserAndAccountManagementPage/UpdateAccountPage';
-import UpdateUserPage from 'pages/UserAndAccountManagementPage/UpdateUserPage';
-import ViewAccountPage from 'pages/UserAndAccountManagementPage/ViewAccountPage';
-import ViewUserPage from 'pages/UserAndAccountManagementPage/ViewUserPage';
+import CreateUserPage from 'pages/UserAndAccountManagement/CreateUserPage';
+import ListUsersPage from 'pages/UserAndAccountManagement/ListUsersPage';
+import UpdateAccountPage from 'pages/UserAndAccountManagement/UpdateAccountPage';
+import UpdateUserPage from 'pages/UserAndAccountManagement/UpdateUserPage';
+import ViewAccountPage from 'pages/UserAndAccountManagement/ViewAccountPage';
+import ViewUserPage from 'pages/UserAndAccountManagement/ViewUserPage';
 import RequireAuth from 'components/RequireAuth';
 import { Routes, Route, Outlet } from 'react-router-dom';
 import { Container, Spinner } from 'reactstrap';
@@ -59,8 +58,7 @@ export default function App() {
             }
           />
           <Route path="account" element={<RequireAuth authInfo={authInfo}><Outlet /></RequireAuth>}>
-            <Route index element={<UserAndAccountManagementPage authInfo={authInfo} setIsAuthenticated={setIsAuthenticated} />} />
-            <Route path="view" element={<ViewAccountPage authInfo={authInfo} />} />
+            <Route index element={<ViewAccountPage authInfo={authInfo} setIsAuthenticated={setIsAuthenticated} />} />
             <Route path="edit" element={<UpdateAccountPage authInfo={authInfo} />} />
             <Route path="users">
               <Route path="add" element={<CreateUserPage />} />

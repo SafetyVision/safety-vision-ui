@@ -2,6 +2,7 @@ import { Form, FormGroup, Label, Input, Button, Toast, ToastHeader, ToastBody } 
 import { useState } from 'react';
 import axios from 'util/axiosConfig';
 import { Link } from 'react-router-dom';
+import BackButton from 'components/BackButton';
 
 export default function CreateUserPage() {
   const [firstName, setFirstName] = useState('');
@@ -48,6 +49,7 @@ export default function CreateUserPage() {
 
   return (
     <div>
+      <BackButton to="/account/users" />
       <h1 className="fw-bold">
         Add User
       </h1>

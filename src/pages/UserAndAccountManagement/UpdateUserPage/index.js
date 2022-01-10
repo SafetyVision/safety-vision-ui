@@ -3,6 +3,7 @@ import { Form, FormGroup, Label, Button, Input, Toast, ToastHeader, ToastBody } 
 import { useParams } from 'react-router-dom';
 import axios from 'util/axiosConfig';
 import { useNavigate } from 'react-router-dom';
+import BackButton from 'components/BackButton';
 
 export default function UpdateUserPage({ setIsAuthenticated }) {
   const successToastBody = {
@@ -82,6 +83,7 @@ export default function UpdateUserPage({ setIsAuthenticated }) {
 
   return (
     <div>
+      <BackButton to="/account/users" />
       <h1 className="fw-bold">
         Edit User
       </h1>
