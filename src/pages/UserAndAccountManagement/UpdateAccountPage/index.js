@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'util/axiosConfig';
 import { Button, Form, FormGroup, Label, Input, Toast, ToastBody, ToastHeader } from 'reactstrap';
+import BackButton from 'components/BackButton';
 
 export default function UpdateAccountPage({ authInfo }) {
   const successToastContent = {
@@ -44,6 +45,7 @@ export default function UpdateAccountPage({ authInfo }) {
 
   return (
     <div>
+      <BackButton to="/account" />
       <h1 className="pb-4 fw-bold">Edit Account</h1>
       <Form style={{ maxWidth: '500px' }} className="mx-auto">
         <Toast isOpen={isOpen} className="w-100 mb-3">

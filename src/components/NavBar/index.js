@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, Fragment } from 'react';
 import {
   Navbar,
   NavbarBrand,
@@ -8,6 +8,10 @@ import {
   NavItem,
   NavLink,
   Button,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownItem,
+  DropdownMenu,
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import logo from 'assets/logo.png';
@@ -26,33 +30,6 @@ export default function NavBar({
     });
   };
 
-  const unauthenticatedNavBar = [
-    {
-      text: 'Log In',
-      href: '/login',
-    },
-    {
-      text: 'Create Account',
-      href: '/signup',
-    },
-  ];
-
-  const authenticatedNavBar = [
-    {
-      text: 'Dashboard',
-      href: '/',
-    },
-    {
-      text: 'User and Account Management',
-      href: '/account',
-    },
-  ];
-
-  let navBar = unauthenticatedNavBar;
-  if (authInfo.isAuthenticated) {
-    navBar = authenticatedNavBar;
-  }
-
   return (
     <Navbar
       color="light"
@@ -68,13 +45,49 @@ export default function NavBar({
       <NavbarToggler className="me-2" onClick={toggle} />
       <Collapse isOpen={isOpen} navbar>
         <Nav navbar className="me-auto">
-          {navBar.map((navItem) => (
-            <NavItem key={navItem.href}>
-              <NavLink tag={Link} to={navItem.href}>
-                {navItem.text}
-              </NavLink>
-            </NavItem>
-          ))}
+          {
+            !authInfo.isAuthenticated ? (
+              <Fragment>
+                <NavItem>
+                  <NavLink tag={Link} to="/login">
+                    Log In
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} to="/signup">
+                    Create Account
+                  </NavLink>
+                </NavItem>
+              </Fragment>
+            ) : (
+              <Fragment>
+                <NavItem>
+                  <NavLink tag={Link} to="/">
+                    Dashboard
+                  </NavLink>
+                </NavItem>
+                <UncontrolledDropdown
+                  inNavbar
+                  nav
+                >
+                  <DropdownToggle
+                    caret
+                    nav
+                  >
+                    User and Account Management
+                  </DropdownToggle>
+                  <DropdownMenu right>
+                    <DropdownItem tag={Link} to="/account">
+                      Account Management
+                    </DropdownItem>
+                    <DropdownItem tag={Link} to="/account/users">
+                      User Management
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+              </Fragment>
+            )
+          }
         </Nav>
         {
           authInfo.isAuthenticated && (
