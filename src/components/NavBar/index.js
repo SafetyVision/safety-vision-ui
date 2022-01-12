@@ -66,14 +66,8 @@ export default function NavBar({
                     Dashboard
                   </NavLink>
                 </NavItem>
-                <UncontrolledDropdown
-                  inNavbar
-                  nav
-                >
-                  <DropdownToggle
-                    caret
-                    nav
-                  >
+                <UncontrolledDropdown inNavbar nav>
+                  <DropdownToggle caret nav>
                     User and Account Management
                   </DropdownToggle>
                   <DropdownMenu right>
@@ -91,7 +85,6 @@ export default function NavBar({
         </Nav>
         {
           authInfo.isAuthenticated && (
-
             <Button onClick={logout}>
               Logout
             </Button>
