@@ -171,7 +171,7 @@ export default function SignUpPage({
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </FormGroup>
-        <Button color="primary" onClick={createAccount} className="mx-auto">
+        <Button color="primary" onClick={createAccount} className="w-100">
           Create Account
         </Button>
       </Form>

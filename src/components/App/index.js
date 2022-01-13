@@ -32,7 +32,7 @@ export default function App() {
           setIsAuthenticated={setIsAuthenticated}
         />
       </div>
-      <Container className="pt-5 h-100 px-4">
+      <Container className="py-5 h-100 px-4">
         <Routes>
           <Route
             path="/"
