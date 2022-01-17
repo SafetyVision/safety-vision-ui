@@ -66,6 +66,11 @@ export default function NavBar({
                     Dashboard
                   </NavLink>
                 </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} to="/infraction-events">
+                    Infraction Events
+                  </NavLink>
+                </NavItem>
                 <UncontrolledDropdown inNavbar nav>
                   <DropdownToggle caret nav>
                     User and Account Management

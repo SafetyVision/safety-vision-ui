@@ -10,6 +10,8 @@ import UpdateAccountPage from 'pages/UserAndAccountManagement/UpdateAccountPage'
 import UpdateUserPage from 'pages/UserAndAccountManagement/UpdateUserPage';
 import ViewAccountPage from 'pages/UserAndAccountManagement/ViewAccountPage';
 import ViewUserPage from 'pages/UserAndAccountManagement/ViewUserPage';
+import ListInfractionEventsPage from 'pages/InfractionEvents/ListInfractionEventsPage';
+import ViewInfractionEvent from 'pages/InfractionEvents/ViewInfractionEventPage';
 import RequireAuth from 'components/RequireAuth';
 import { Routes, Route, Outlet } from 'react-router-dom';
 import { Container, Spinner } from 'reactstrap';
@@ -66,6 +68,10 @@ export default function App() {
               <Route path=":userId/view" element={<ViewUserPage />} />
               <Route index element={<ListUsersPage authInfo={authInfo} />} />
             </Route>
+          </Route>
+          <Route path="infraction-events" element={<RequireAuth authInfo={authInfo}><Outlet /></RequireAuth>}>
+            <Route index element={<ListInfractionEventsPage />} />
+            <Route path=":infractionEventId/view" element={<ViewInfractionEvent />} />
           </Route>
         </Routes>
       </Container>
