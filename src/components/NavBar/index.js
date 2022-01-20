@@ -66,14 +66,13 @@ export default function NavBar({
                     Dashboard
                   </NavLink>
                 </NavItem>
-                <UncontrolledDropdown
-                  inNavbar
-                  nav
-                >
-                  <DropdownToggle
-                    caret
-                    nav
-                  >
+                <NavItem>
+                  <NavLink tag={Link} to="/infraction-events">
+                    Infraction Events
+                  </NavLink>
+                </NavItem>
+                <UncontrolledDropdown inNavbar nav>
+                  <DropdownToggle caret nav>
                     User and Account Management
                   </DropdownToggle>
                   <DropdownMenu right>
@@ -89,6 +88,9 @@ export default function NavBar({
                   <NavLink tag={Link} to="/devicemanager">
                     Device Manager
                   </NavLink>
+                  <NavLink tag={Link} to="/infractionTypes">
+                    Infraction Types
+                  </NavLink>
                 </NavItem>
               </Fragment>
             )
@@ -96,7 +98,6 @@ export default function NavBar({
         </Nav>
         {
           authInfo.isAuthenticated && (
-
             <Button onClick={logout}>
               Logout
             </Button>

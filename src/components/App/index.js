@@ -13,6 +13,10 @@ import ViewUserPage from 'pages/UserAndAccountManagement/ViewUserPage';
 import ListDevicesPage from 'pages/DeviceManagerPage/ListDevicesPage';
 import AddDevicePage from 'pages/DeviceManagerPage/AddDevicePage';
 import UpdateDevicePage from 'pages/DeviceManagerPage/UpdateDevicePage';
+import ListInfractionEventsPage from 'pages/InfractionEvents/ListInfractionEventsPage';
+import ViewInfractionEvent from 'pages/InfractionEvents/ViewInfractionEventPage';
+import InfractionTypesPage from 'pages/InfractionTypesPage/ListInfractionTypesPage';
+import CreateInfractionTypePage from 'pages/InfractionTypesPage/CreateInfractionTypePage';
 import RequireAuth from 'components/RequireAuth';
 import { Routes, Route, Outlet } from 'react-router-dom';
 import { Container, Spinner } from 'reactstrap';
@@ -35,7 +39,7 @@ export default function App() {
           setIsAuthenticated={setIsAuthenticated}
         />
       </div>
-      <Container className="pt-5 h-100 px-4">
+      <Container className="py-5 h-100 px-4">
         <Routes>
           <Route
             path="/"
@@ -74,6 +78,14 @@ export default function App() {
             <Route path="add" element={<AddDevicePage/>} />
             <Route path=":deviceId/edit" element={<UpdateDevicePage/>} />
             <Route index element={<ListDevicesPage/>}/>
+          </Route>
+          <Route path="infraction-events" element={<RequireAuth authInfo={authInfo}><Outlet /></RequireAuth>}>
+            <Route index element={<ListInfractionEventsPage />} />
+            <Route path=":infractionEventId/view" element={<ViewInfractionEvent />} />
+          </Route>
+          <Route path="infractionTypes" element={<RequireAuth authInfo={authInfo}><Outlet /></RequireAuth>}>
+            <Route path="add" element={<CreateInfractionTypePage />}/>
+            <Route index element={<InfractionTypesPage />}/>
           </Route>
         </Routes>
       </Container>
