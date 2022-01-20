@@ -53,11 +53,8 @@ export default function ListDevicesPage() {
   const [liveFeedDevice, setLiveFeedDevice] = React.useState(null);
 
   React.useEffect(() => {
-    console.log("getting devices...")
     axios.get('/api/devices').then((res) => {
-        console.log(res);
         setDevices(res.data);
-        console.log(devices);
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showLiveFeed])
@@ -71,9 +68,7 @@ export default function ListDevicesPage() {
     axios.delete(`/api/devices/${id}`).then(() => {
       setDevices(null);
       axios.get('/api/devices').then((res) => {
-        console.log(res);
         setDevices(res.data);
-        console.log(devices);
       });
     });
   }
