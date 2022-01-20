@@ -88,6 +88,8 @@ export default function NavBar({
                   <NavLink tag={Link} to="/devicemanager">
                     Device Manager
                   </NavLink>
+                </NavItem>
+                <NavItem>
                   <NavLink tag={Link} to="/infractionTypes">
                     Infraction Types
                   </NavLink>
