@@ -84,6 +84,11 @@ export default function NavBar({
                     </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
+                <NavItem>
+                  <NavLink tag={Link} to="/infractionTypes">
+                    Infraction Types
+                  </NavLink>
+                </NavItem>
               </Fragment>
             )
           }
