@@ -7,7 +7,7 @@ import axios from 'util/axiosConfig';
 // import IconButton from '@material-ui/core/IconButton';
 // import CloseIcon from '@material-ui/icons/Close';
 // import Typography from '@material-ui/core/Typography';
-import LiveFeed from '../../../components/LiveFeed/index';
+import LiveFeed from 'components/LiveFeed/index';
 import { Spinner, Table, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal'

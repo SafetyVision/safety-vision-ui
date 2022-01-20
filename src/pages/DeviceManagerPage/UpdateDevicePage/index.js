@@ -4,7 +4,7 @@ import axios from 'util/axiosConfig';
 import { Button, Form, FormGroup, Label, Input, Toast, ToastBody, ToastHeader } from 'reactstrap';
 import BackButton from 'components/BackButton';
 
-export default function UpdateDevicePage({ device }) {
+export default function UpdateDevicePage() {
   const successToastContent = {
     header: 'Device updated',
     body: 'Your device was successfully updated.',
