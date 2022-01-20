@@ -21,12 +21,12 @@ export default function InfractionTypesPage() {
             {infractionTypes.infraction_type_name}
           </td>
           <td className="text-end align-middle">
-            <Button className="w-50" color="primary" tag={Link} to={`/infractionTypes/${infractionTypes.id}/view`}>
+            <Button className="w-100" color="primary" tag={Link} to={`/infractionTypes/${infractionTypes.id}/view`}>
               View
             </Button>
           </td>
           <td className="text-end align-middle">
-            <Button className="mx-1 w-50" tag={Link} to={`/account/${infractionTypes.id}/edit`}>
+            <Button className="mx-1 w-100" tag={Link} to={`/account/${infractionTypes.id}/edit`}>
               Edit
             </Button>
           </td>

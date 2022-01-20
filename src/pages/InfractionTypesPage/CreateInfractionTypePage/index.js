@@ -12,7 +12,7 @@ export default function CreateInfractionTypePage() {
 
   const clearForm = () => {
     setInfractionName('');
-    setDeviceId('');
+    // setDeviceId('');
   }
 
   const createInfractionType = () => {
