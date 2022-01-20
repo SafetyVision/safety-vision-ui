@@ -5,7 +5,7 @@ import BackButton from 'components/BackButton';
 
 export default function CreateInfractionTypePage() {
   const [infractionName, setInfractionName] = useState('');
-  const [deviceId, setDeviceId] = useState('');
+  // const [deviceId, setDeviceId] = useState('');
   const [isError, setIsError] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [setInfractionType] = useState(null);
@@ -18,7 +18,7 @@ export default function CreateInfractionTypePage() {
   const createInfractionType = () => {
     axios.post('/api/infraction_types/create', {
       infraction_type_name: infractionName,
-      device_id: deviceId,
+      // device_id: deviceId,
     }).then((res) => {
       clearForm();
       setIsSuccess(true);
@@ -65,14 +65,14 @@ export default function CreateInfractionTypePage() {
             placeholder="Infraction Name"
           />
         </FormGroup>
-        <FormGroup>
+        {/* <FormGroup>
           <Label>Device ID</Label>
           <Input
             value={deviceId}
             onChange={(e) => setDeviceId(e.target.value.trim())}
             placeholder="Device ID"
           />
-        </FormGroup>
+        </FormGroup> */}
         <Button className="w-100" color="primary" onClick={createInfractionType}>
           Create Infraction Type
         </Button>
