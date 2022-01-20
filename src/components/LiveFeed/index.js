@@ -1,10 +1,9 @@
-import "./liveFeed.css";
 import ReactHlsPlayer from 'react-hls-player';
 
 export default function LiveFeed({url}) {
     if (url){
         return (
-            <div id="playerContainer">
+            <div>
                 <ReactHlsPlayer
                     src={url}
                     autoPlay={true}
@@ -19,7 +18,7 @@ export default function LiveFeed({url}) {
         
     } 
     return (
-        <div id="playerContainer">
+        <div>
             <p>{"Invalid URL:  " + url}</p>
         </div>
     );
