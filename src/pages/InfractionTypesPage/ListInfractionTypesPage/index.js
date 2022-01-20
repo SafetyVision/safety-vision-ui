@@ -12,7 +12,6 @@ export default function InfractionTypesPage() {
           setInfractionTypes(res.data);
         });  
       }
-      // console.log(infractionTypes);
     }, [infractionTypes]);
 
     const mapInfractionToTableRow = (infractionTypes) => (

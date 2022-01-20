@@ -12,10 +12,8 @@ import ViewAccountPage from 'pages/UserAndAccountManagement/ViewAccountPage';
 import ViewUserPage from 'pages/UserAndAccountManagement/ViewUserPage';
 import ListInfractionEventsPage from 'pages/InfractionEvents/ListInfractionEventsPage';
 import ViewInfractionEvent from 'pages/InfractionEvents/ViewInfractionEventPage';
-
 import InfractionTypesPage from 'pages/InfractionTypesPage/ListInfractionTypesPage';
 import CreateInfractionTypePage from 'pages/InfractionTypesPage/CreateInfractionTypePage';
-
 import RequireAuth from 'components/RequireAuth';
 import { Routes, Route, Outlet } from 'react-router-dom';
 import { Container, Spinner } from 'reactstrap';
@@ -77,7 +75,7 @@ export default function App() {
             <Route index element={<ListInfractionEventsPage />} />
             <Route path=":infractionEventId/view" element={<ViewInfractionEvent />} />
           </Route>
-          <Route path="infractionTypes">
+          <Route path="infractionTypes" element={<RequireAuth authInfo={authInfo}><Outlet /></RequireAuth>}>
             <Route path="add" element={<CreateInfractionTypePage />}/>
             <Route index element={<InfractionTypesPage />}/>
           </Route>
