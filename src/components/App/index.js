@@ -10,7 +10,9 @@ import UpdateAccountPage from 'pages/UserAndAccountManagement/UpdateAccountPage'
 import UpdateUserPage from 'pages/UserAndAccountManagement/UpdateUserPage';
 import ViewAccountPage from 'pages/UserAndAccountManagement/ViewAccountPage';
 import ViewUserPage from 'pages/UserAndAccountManagement/ViewUserPage';
-import DeviceManagerPage from 'pages/DeviceManagerPage';
+import ListDevicesPage from 'pages/DeviceManagerPage/ListDevicesPage';
+import AddDevicePage from 'pages/DeviceManagerPage/AddDevicePage';
+import UpdateDevicePage from 'pages/DeviceManagerPage/UpdateDevicePage';
 import RequireAuth from 'components/RequireAuth';
 import { Routes, Route, Outlet } from 'react-router-dom';
 import { Container, Spinner } from 'reactstrap';
@@ -68,7 +70,11 @@ export default function App() {
               <Route index element={<ListUsersPage authInfo={authInfo} />} />
             </Route>
           </Route>
-          <Route path="devicemanager" element={<DeviceManagerPage></DeviceManagerPage>}></Route>
+          <Route path="devicemanager">
+            <Route path="add" element={<AddDevicePage/>} />
+            <Route path=":deviceId/edit" element={<UpdateDevicePage/>} />
+            <Route index element={<ListDevicesPage/>}/>
+          </Route>
         </Routes>
       </Container>
     </div>
