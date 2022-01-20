@@ -17,8 +17,8 @@ export default function AddDevicePage() {
     }
 
     const addDevice = () => {
-            axios.post('/api/devices/create', {
-        location: location,
+        axios.post('/api/devices/create', {
+            location: location,
             stream_name: streamName,
         }).then((res) => {
             clearForm();

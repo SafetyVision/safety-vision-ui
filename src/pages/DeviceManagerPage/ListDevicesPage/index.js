@@ -70,6 +70,11 @@ export default function ListDevicesPage() {
   const deleteDevice = (id) => {
     axios.delete(`/api/devices/${id}`).then(() => {
       setDevices(null);
+      axios.get('/api/devices').then((res) => {
+        console.log(res);
+        setDevices(res.data);
+        console.log(devices);
+      });
     });
   }
 
@@ -132,7 +137,7 @@ export default function ListDevicesPage() {
             </Table>
             <Modal show={showLiveFeed} size="lg" onHide={() => setShowLiveFeed(false)}>
               <Modal.Header closeButton>
-                <Modal.Title>{liveFeedDevice? liveFeedDevice.location + ": " + liveFeedDevice.stream_name : ""}</Modal.Title>
+                <Modal.Title>{liveFeedDevice? liveFeedDevice.stream_name : ""}</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                 <LiveFeed url={liveFeedDevice? liveFeedDevice.stream_url : null}></LiveFeed>
