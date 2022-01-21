@@ -49,7 +49,6 @@ export default function ListDevicesPage() {
           Delete
         </Button>
       </td>
-
     </tr>
   );
 

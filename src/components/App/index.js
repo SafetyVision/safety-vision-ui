@@ -74,7 +74,7 @@ export default function App() {
               <Route index element={<ListUsersPage authInfo={authInfo} />} />
             </Route>
           </Route>
-          <Route path="devicemanager">
+          <Route path="devicemanager" element={<RequireAuth authInfo={authInfo}><Outlet /></RequireAuth>}>
             <Route path="add" element={<AddDevicePage/>} />
             <Route path=":deviceId/edit" element={<UpdateDevicePage/>} />
             <Route index element={<ListDevicesPage/>}/>

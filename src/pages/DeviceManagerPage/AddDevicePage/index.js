@@ -28,7 +28,6 @@ export default function AddDevicePage() {
         }).catch(() => {
             setIsError(true);
         })
-
     };
 
     return (
