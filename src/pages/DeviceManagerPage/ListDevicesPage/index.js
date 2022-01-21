@@ -1,32 +1,28 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'util/axiosConfig';
 import LiveFeed from 'components/LiveFeed/index';
 import { Spinner, Table, Button, Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 export default function ListDevicesPage() {
-  const [devices, setDevices] = React.useState(null);
-  const [showLiveFeed, setShowLiveFeed] = React.useState(false);
-  const [liveFeedDevice, setLiveFeedDevice] = React.useState(null);
+  const [devices, setDevices] = useState(null);
+  const [liveFeedDevice, setLiveFeedDevice] = useState(null);
 
-  React.useEffect(() => {
-    axios.get('/api/devices').then((res) => {
+  useEffect(() => {
+    if (!devices) {
+      axios.get('/api/devices').then((res) => {
         setDevices(res.data);
-    });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showLiveFeed])
+      });
+    }
+  }, [devices])
 
   const handleShowLiveFeed = (device) => {
-    setShowLiveFeed(true);
     setLiveFeedDevice(device);
   }
 
   const deleteDevice = (id) => {
     axios.delete(`/api/devices/${id}`).then(() => {
       setDevices(null);
-      axios.get('/api/devices').then((res) => {
-        setDevices(res.data);
-      });
     });
   }
 
@@ -44,12 +40,7 @@ export default function ListDevicesPage() {
         </Button>
       </td>
       <td className="text-end align-middle" >
-        <Button className="mx-1 w-100" tag={Link} to={{
-          pathname: `/devicemanager/${device.id}/edit`,
-          state: {
-            device: device
-          }
-        }}>
+        <Button className="mx-1 w-100" tag={Link} to={`/devicemanager/${device.id}/edit`}>
           Edit
         </Button>
       </td>
@@ -58,15 +49,15 @@ export default function ListDevicesPage() {
           Delete
         </Button>
       </td>
-      
-    </tr> 
+
+    </tr>
   );
 
   return (
     <div>
       <div className="d-flex justify-content-between align-items-center pb-4">
         <h1 className="fw-bold">Device Manager</h1>
-        <Button tag={Link} to="/devicemanager/add" color="primary" className="h" >
+        <Button tag={Link} to="/devicemanager/add" color="primary" >
           Add Device
         </Button>
       </div>
@@ -87,12 +78,12 @@ export default function ListDevicesPage() {
                 {devices.map(mapDeviceToTableRow)}
               </tbody>
             </Table>
-            <Modal isOpen={showLiveFeed} toggle={() => setShowLiveFeed(false)} size="xl" onClosed={() => setShowLiveFeed(false)}>
-              <ModalHeader toggle={() => setShowLiveFeed(false)}>
-                {liveFeedDevice? liveFeedDevice.stream_name : ""}
+            <Modal isOpen={liveFeedDevice} toggle={() => setLiveFeedDevice(null)} size="xl">
+              <ModalHeader toggle={() => setLiveFeedDevice(null)}>
+                {liveFeedDevice ? liveFeedDevice.stream_name : ""}
               </ModalHeader>
               <ModalBody>
-                <LiveFeed url={liveFeedDevice? liveFeedDevice.stream_url : null}></LiveFeed>
+                <LiveFeed url={liveFeedDevice ? liveFeedDevice.stream_url : null} />
               </ModalBody>
             </Modal>
           </div>

@@ -1,6 +1,6 @@
 import ReactHlsPlayer from 'react-hls-player';
 
-export default function LiveFeed({url}) {
+export default function LiveFeed({ url }) {
     if (url){
         return (
             <div>
@@ -10,16 +10,15 @@ export default function LiveFeed({url}) {
                     controls={true}
                     width="100%"
                     height="auto"
-                    className='player'
+                    className="player"
                 />
             </div>
         );
-    } else {
-        
-    } 
+    }
+
     return (
         <div>
-            <p>{"Invalid URL:  " + url}</p>
+            <p>{`Invalid URL: ${url}`}</p>
         </div>
     );
 }

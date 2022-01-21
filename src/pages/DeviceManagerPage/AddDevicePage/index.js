@@ -28,7 +28,7 @@ export default function AddDevicePage() {
         }).catch(() => {
             setIsError(true);
         })
-  
+
     };
 
     return (
@@ -47,18 +47,18 @@ export default function AddDevicePage() {
                 </ToastBody>
                 </Toast>
                 {
-                device && (
-                    <Toast isOpen={isSuccess} className="mb-3 w-100" >
-                    <ToastHeader toggle={() => setIsSuccess(false)}>
-                        Device Added Successfully
-                    </ToastHeader>
-                    <ToastBody>
-                        View your new device located in, {device.location}, &nbsp;
-                        <Link to={`/devicemanager`}>here</Link>
-                        .
-                    </ToastBody>
-                    </Toast>
-                )
+                    device && (
+                        <Toast isOpen={isSuccess} className="mb-3 w-100" >
+                        <ToastHeader toggle={() => setIsSuccess(false)}>
+                            Device Added Successfully
+                        </ToastHeader>
+                        <ToastBody>
+                            View your new device located in, {device.location}, &nbsp;
+                            <Link to={`/devicemanager`}>here</Link>
+                            .
+                        </ToastBody>
+                        </Toast>
+                    )
                 }
                 <FormGroup>
                 <Label>Location</Label>

@@ -25,12 +25,11 @@ export default function UpdateDevicePage() {
 
   useEffect(() => {
     axios.get(`/api/devices/${deviceId}`).then((res) => {
-    setLocation(res.data.location);
-    setStreamName(res.data.stream_name);
-    setOriginalLocation(res.data.location);
-    setOriginalStreamName(res.data.stream_name);
+      setLocation(res.data.location);
+      setStreamName(res.data.stream_name);
+      setOriginalLocation(res.data.location);
+      setOriginalStreamName(res.data.stream_name);
     });
-    
   }, [deviceId]);
 
   const updateDevice = () => {
