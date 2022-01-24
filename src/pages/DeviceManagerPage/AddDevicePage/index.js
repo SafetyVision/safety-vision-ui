@@ -19,7 +19,7 @@ export default function AddDevicePage() {
     const addDevice = () => {
         axios.post('/api/devices/create', {
             serial_number: serial_number,
-            location: location,
+            location: location.trim(),
         }).then((res) => {
             clearForm();
             setIsSuccess(true);
@@ -63,7 +63,7 @@ export default function AddDevicePage() {
                 <Label>Serial Number</Label>
                 <Input
                     value={serial_number}
-                    onChange={(e) => setSerialNumber(e.target.value.trim())}
+                    onChange={(e) => setSerialNumber(e.target.value.replace(/\s/g,''))}
                     placeholder="Serial Number"
                 />
                 </FormGroup>
@@ -71,7 +71,7 @@ export default function AddDevicePage() {
                 <Label>Location</Label>
                 <Input
                     value={location}
-                    onChange={(e) => setLocation(e.target.value.trim())}
+                    onChange={(e) => setLocation(e.target.value)}
                     placeholder="Location"
                 />
                 </FormGroup>
