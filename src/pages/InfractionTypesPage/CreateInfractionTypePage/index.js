@@ -2,13 +2,13 @@ import { Form, FormGroup, Label, Input, Button, Toast, ToastHeader, ToastBody } 
 import { useState } from 'react';
 import axios from 'util/axiosConfig';
 import BackButton from 'components/BackButton';
+import LiveFeed from 'components/LiveFeed';
 
 export default function CreateInfractionTypePage() {
   const [infractionName, setInfractionName] = useState('');
   // const [deviceId, setDeviceId] = useState('');
-  const [isError, setIsError] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [setInfractionType] = useState(null);
+  const [streamUrl, setStreamUrl] = useState('');
 
   const clearForm = () => {
     setInfractionName('');
@@ -17,15 +17,15 @@ export default function CreateInfractionTypePage() {
 
   const createInfractionType = () => {
     axios.post('/api/infraction_types/create', {
-      infraction_type_name: infractionName,
-      // device_id: deviceId,
-    }).then((res) => {
+      infraction_type_name: infractionName.trim(),
+      device: 1,
+    }).then(() => {
       clearForm();
-      setIsSuccess(true);
-      setInfractionType(res.data);
-    }).catch(() => {
-      setIsError(true);
-    })
+      axios.get('/api/devices/1').then((res) => {
+        setStreamUrl(res.data.stream_url);
+        setIsSuccess(true);
+      })
+    });
   };
 
   return (
@@ -35,47 +35,56 @@ export default function CreateInfractionTypePage() {
         Create Infraction Type
       </h1>
       <Form className="mx-auto" style={{ maxWidth: '500px' }}>
-        <Toast isOpen={isError} className="mb-3 w-100" >
+        {/* <Toast isOpen={isError} className="mb-3 w-100" >
           <ToastHeader toggle={() => setIsError(false)}>
             Failed to Create Infraction Type
           </ToastHeader>
           <ToastBody>
             Please provide valid data and try again.
           </ToastBody>
-        </Toast>
-        {/* {
-          user && (
-            <Toast isOpen={isSuccess} className="mb-3 w-100" >
-              <ToastHeader toggle={() => setIsSuccess(false)}>
-                User Added Successfully
-              </ToastHeader>
-              <ToastBody>
-                View your new user, {user.first_name}, &nbsp;
-                <Link to={`/account/users/${user.id}/view`}>here</Link>
-                .
-              </ToastBody>
-            </Toast>
+        </Toast> */}
+        {
+          <Toast isOpen={isSuccess} className="mb-3 w-100" >
+            <ToastHeader toggle={() => setIsSuccess(false)}>
+              Infraction Type Added Successfully
+            </ToastHeader>
+            <ToastBody>
+              Demonstrate to your device an infraction occuring.
+            </ToastBody>
+          </Toast>
+        }
+        {
+          !isSuccess ? (
+            <div>
+              <FormGroup>
+                <Label>Infraction Name</Label>
+                <Input
+                  value={infractionName}
+                  onChange={(e) => setInfractionName(e.target.value)}
+                  placeholder="Infraction Name"
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label>Device</Label>
+                <Input
+                  type="select"
+                >
+                  <option>
+                    Select a device
+                  </option>
+                  <option>
+                    My New Device
+                  </option>
+                </Input>
+              </FormGroup>
+              <Button className="w-100" color="primary" onClick={createInfractionType}>
+                Create Infraction Type
+              </Button>
+            </div>
+          ) : (
+            <LiveFeed url={streamUrl} />
           )
-        } */}
-        <FormGroup>
-          <Label>Infraction Name</Label>
-          <Input
-            value={infractionName}
-            onChange={(e) => setInfractionName(e.target.value.trim())}
-            placeholder="Infraction Name"
-          />
-        </FormGroup>
-        {/* <FormGroup>
-          <Label>Device ID</Label>
-          <Input
-            value={deviceId}
-            onChange={(e) => setDeviceId(e.target.value.trim())}
-            placeholder="Device ID"
-          />
-        </FormGroup> */}
-        <Button className="w-100" color="primary" onClick={createInfractionType}>
-          Create Infraction Type
-        </Button>
+        }
       </Form>
     </div>
   );
