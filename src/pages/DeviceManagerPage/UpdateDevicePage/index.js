@@ -6,7 +6,7 @@ import BackButton from 'components/BackButton';
 
 export default function UpdateDevicePage() {
   const successToastContent = {
-    header: 'Device updated',
+    header: 'Device Updated',
     body: 'Your device was successfully updated.',
   };
 
@@ -16,34 +16,28 @@ export default function UpdateDevicePage() {
   }
 
   const [location, setLocation] = useState('');
-  const [streamName, setStreamName] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [originalLocation, setOriginalLocation] = useState('');
-  const [originalStreamName, setOriginalStreamName] = useState('');
   const [toastContent, setToastContent] = useState(successToastContent);
   const { deviceId } = useParams();
 
   useEffect(() => {
     axios.get(`/api/devices/${deviceId}`).then((res) => {
       setLocation(res.data.location);
-      setStreamName(res.data.stream_name);
       setOriginalLocation(res.data.location);
-      setOriginalStreamName(res.data.stream_name);
     });
   }, [deviceId]);
 
   const updateDevice = () => {
+    setIsOpen(false);
     axios.patch(`/api/devices/${deviceId}`, {
       location: location.trim(),
-      stream_name: streamName.trim(),
     }).then(() => {
       setToastContent(successToastContent);
       setIsOpen(true);
       setOriginalLocation(location);
-      setOriginalStreamName(streamName);
     }).catch(() => {
       setLocation(originalLocation);
-      setStreamName(originalStreamName);
       setToastContent(errorToastContent);
       setIsOpen(true);
     });
@@ -69,16 +63,6 @@ export default function UpdateDevicePage() {
           <Input
             value={location}
             onChange={(e) => setLocation(e.target.value)}
-            style={{ maxWidth: '500px' }}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label>
-            Stream Name
-          </Label>
-          <Input
-            value={streamName}
-            onChange={(e) => setStreamName(e.target.value)}
             style={{ maxWidth: '500px' }}
           />
         </FormGroup>

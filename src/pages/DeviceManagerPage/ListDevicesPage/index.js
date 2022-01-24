@@ -7,10 +7,13 @@ import { Link } from 'react-router-dom';
 export default function ListDevicesPage() {
   const [devices, setDevices] = useState(null);
   const [liveFeedDevice, setLiveFeedDevice] = useState(null);
+  const [loadDevices, setLoadDevices] = useState(true);
+
 
   useEffect(() => {
     if (!devices) {
       axios.get('/api/devices').then((res) => {
+        setLoadDevices(false);
         setDevices(res.data);
       });
     }
@@ -29,10 +32,10 @@ export default function ListDevicesPage() {
   const mapDeviceToTableRow = (device) => (
     <tr key={device.id}>
       <td className="align-middle">
-        {device.location}
+        {device.serial_number}
       </td>
       <td className="align-middle">
-        {device.stream_name}
+        {device.location}
       </td>
       <td className="text-end align-middle">
         <Button className="w-100" color="primary" onClick={() => handleShowLiveFeed(device)}>
@@ -61,33 +64,38 @@ export default function ListDevicesPage() {
         </Button>
       </div>
       {
-        devices ? (
-          <div>
-            <Table striped borderless responsive>
-              <thead>
-                <tr>
-                  <th>Location</th>
-                  <th>Stream Name</th>
-                  <th />
-                  <th />
-                  <th />
-                </tr>
-              </thead>
-              <tbody className="border-top border-bottom">
-                {devices.map(mapDeviceToTableRow)}
-              </tbody>
-            </Table>
-            <Modal isOpen={liveFeedDevice} toggle={() => setLiveFeedDevice(null)} size="xl">
-              <ModalHeader toggle={() => setLiveFeedDevice(null)}>
-                {liveFeedDevice ? liveFeedDevice.stream_name : ""}
-              </ModalHeader>
-              <ModalBody>
-                <LiveFeed url={liveFeedDevice ? liveFeedDevice.stream_url : null} />
-              </ModalBody>
-            </Modal>
-          </div>
+        !loadDevices ? (
+          devices && devices.length !== 0 ? (
+            <div>
+              <Table striped borderless responsive>
+                <thead>
+                  <tr>
+                    <th>Serial Number</th>
+                    <th>Location</th>
+                    <th />
+                    <th />
+                    <th />
+                  </tr>
+                </thead>
+                <tbody className="border-top border-bottom">
+                  {devices.map(mapDeviceToTableRow)}
+                </tbody>
+              </Table>
+              <Modal isOpen={liveFeedDevice} toggle={() => setLiveFeedDevice(null)} size="xl">
+                <ModalHeader toggle={() => setLiveFeedDevice(null)}>
+                  {liveFeedDevice ? "Livefeed of Device [ " + liveFeedDevice.serial_number + " ]": ""}
+                </ModalHeader>
+                <ModalBody>
+                  <LiveFeed url={liveFeedDevice ? liveFeedDevice.stream_url : null} />
+                </ModalBody>
+              </Modal>
+            </div>
+          ) : (
+            <h3>No Devices Found</h3>
+          )
         ) : (
           <Spinner />
+          
         )
       }
     </div>

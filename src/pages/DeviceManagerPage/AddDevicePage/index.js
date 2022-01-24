@@ -5,21 +5,21 @@ import { Link } from 'react-router-dom';
 import BackButton from 'components/BackButton';
 
 export default function AddDevicePage() {
+    const [serial_number, setSerialNumber] = useState('');
     const [location, setLocation] = useState('');
-    const [streamName, setStreamName] = useState('');
     const [isSuccess, setIsSuccess] = useState(false);
     const [isError, setIsError] = useState(false);
     const [device, setDevice] = useState(null);
 
     const clearForm = () => {
         setLocation('');
-        setStreamName('');
+        setSerialNumber('');
     }
 
     const addDevice = () => {
         axios.post('/api/devices/create', {
+            serial_number: serial_number,
             location: location,
-            stream_name: streamName,
         }).then((res) => {
             clearForm();
             setIsSuccess(true);
@@ -42,7 +42,7 @@ export default function AddDevicePage() {
                     Could Not Add Device
                 </ToastHeader>
                 <ToastBody>
-                    Please provide valid device data and try again.
+                    Check if the serial number is correct and if the device is streaming properly.
                 </ToastBody>
                 </Toast>
                 {
@@ -60,19 +60,19 @@ export default function AddDevicePage() {
                     )
                 }
                 <FormGroup>
+                <Label>Serial Number</Label>
+                <Input
+                    value={serial_number}
+                    onChange={(e) => setSerialNumber(e.target.value.trim())}
+                    placeholder="Serial Number"
+                />
+                </FormGroup>
+                <FormGroup>
                 <Label>Location</Label>
                 <Input
                     value={location}
                     onChange={(e) => setLocation(e.target.value.trim())}
                     placeholder="Location"
-                />
-                </FormGroup>
-                <FormGroup>
-                <Label>Stream Name</Label>
-                <Input
-                    value={streamName}
-                    onChange={(e) => setStreamName(e.target.value.trim())}
-                    placeholder="Stream name"
                 />
                 </FormGroup>
                 <Button className="w-100" color="primary" onClick={addDevice}>
