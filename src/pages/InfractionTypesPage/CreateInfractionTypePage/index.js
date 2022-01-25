@@ -1,30 +1,42 @@
 import { Form, FormGroup, Label, Input, Button, Toast, ToastHeader, ToastBody } from 'reactstrap';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'util/axiosConfig';
 import BackButton from 'components/BackButton';
 import LiveFeed from 'components/LiveFeed';
 
 export default function CreateInfractionTypePage() {
   const [infractionName, setInfractionName] = useState('');
-  // const [deviceId, setDeviceId] = useState('');
+  const [deviceId, setDeviceId] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
   const [streamUrl, setStreamUrl] = useState('');
+  const [devices, setDevices] = useState(null);
 
   const clearForm = () => {
     setInfractionName('');
-    // setDeviceId('');
-  }
+  };
+
+  const mapDeviceToOption = device => (
+    <option value={device.id}>
+      {device.location}
+    </option>
+  );
+
+  useEffect(() => {
+    axios.get('/api/devices').then((res) => {
+      setDevices(res.data);
+    });
+  }, [])
 
   const createInfractionType = () => {
     axios.post('/api/infraction_types/create', {
       infraction_type_name: infractionName.trim(),
-      device: 1,
+      device: deviceId,
     }).then(() => {
       clearForm();
-      axios.get('/api/devices/1').then((res) => {
+      axios.get(`/api/devices/${deviceId}`).then((res) => {
         setStreamUrl(res.data.stream_url);
         setIsSuccess(true);
-      })
+      });
     });
   };
 
@@ -54,7 +66,7 @@ export default function CreateInfractionTypePage() {
           </Toast>
         }
         {
-          !isSuccess ? (
+          !isSuccess && devices ? (
             <div>
               <FormGroup>
                 <Label>Infraction Name</Label>
@@ -68,13 +80,13 @@ export default function CreateInfractionTypePage() {
                 <Label>Device</Label>
                 <Input
                   type="select"
+                  value={deviceId}
+                  onChange={(e) => setDeviceId(e.target.value)}
                 >
                   <option>
                     Select a device
                   </option>
-                  <option>
-                    My New Device
-                  </option>
+                  {devices.map(mapDeviceToOption)}
                 </Input>
               </FormGroup>
               <Button className="w-100" color="primary" onClick={createInfractionType}>
