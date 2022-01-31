@@ -1,16 +1,18 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'util/axiosConfig';
-import {Spinner, Table, Button} from 'reactstrap';
-import {Link} from 'react-router-dom';
+import { Spinner, Table, Button } from 'reactstrap';
+import { Link, useParams } from 'react-router-dom';
+import BackButton from 'components/BackButton';
 
 export default function InfractionTypesPage() {
     const [infractionTypes, setInfractionTypes] = useState(null);
+    const params = useParams();
 
     useEffect(() => {
       if (infractionTypes === null) {
         axios.get('/api/infraction_types/').then((res) => {
           setInfractionTypes(res.data);
-        });  
+        });
       }
     }, [infractionTypes]);
 
@@ -20,7 +22,7 @@ export default function InfractionTypesPage() {
             {infractionTypes.infraction_type_name}
           </td>
           <td className="text-end align-middle">
-            <Button className="w-100" color="primary" tag={Link} to={`/infractionTypes/${infractionTypes.id}/view`}>
+            <Button className="w-100" color="primary" tag={Link} to={`/device-manager/${params.deviceId}/infraction-types/${infractionTypes.id}/view`}>
               View
             </Button>
           </td>
@@ -33,12 +35,10 @@ export default function InfractionTypesPage() {
     );
 
     return (
-        <div>
+      <div>
+        <BackButton to={`/device-manager/${params.deviceId}/edit`} />
         <div className="d-flex justify-content-between align-items-center pb-4">
-          <h1 className="fw-bold">Infraction Types</h1>
-          <Button tag={Link} to="/infractionTypes/add" color="primary" className="h" >
-            Add Infraction Type
-          </Button>
+          <h1 className="fw-bold">{`Infraction Types For Device #${params.deviceId}`}</h1>
         </div>
         {
           true ? (

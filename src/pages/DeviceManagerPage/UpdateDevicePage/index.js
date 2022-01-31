@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 import axios from 'util/axiosConfig';
-import { Button, Form, FormGroup, Label, Input, Toast, ToastBody, ToastHeader } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Toast, ToastBody, ToastHeader, Row, Col } from 'reactstrap';
 import BackButton from 'components/BackButton';
+import { Link } from 'react-router-dom';
 
 export default function UpdateDevicePage() {
   const successToastContent = {
@@ -45,8 +46,20 @@ export default function UpdateDevicePage() {
 
   return (
     <div>
-      <BackButton to="/devicemanager" />
-      <h1 className="pb-4 fw-bold">Edit Device</h1>
+      <BackButton to="/device-manager" />
+      <Row className="d-flex justify-content-between align-items-center pb-4">
+        <Col>
+          <h1 className="fw-bold">Edit Device</h1>
+        </Col>
+        <Col className="d-flex justify-content-end">
+          <Button tag={Link} to={`/device-manager/${deviceId}/infraction-types`} color="primary" className="mx-2">
+            View Infraction Types
+          </Button>
+          <Button tag={Link} to={`/device-manager/${deviceId}/infraction-types/add`} color="primary">
+            Add Infraction Type
+          </Button>
+        </Col>
+      </Row>
       <Form style={{ maxWidth: '500px' }} className="mx-auto">
         <Toast isOpen={isOpen} className="w-100 mb-3">
           <ToastHeader toggle={() => setIsOpen(false)}>
