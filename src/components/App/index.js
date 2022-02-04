@@ -15,7 +15,7 @@ import AddDevicePage from 'pages/DeviceManagerPage/AddDevicePage';
 import UpdateDevicePage from 'pages/DeviceManagerPage/UpdateDevicePage';
 import ListInfractionEventsPage from 'pages/InfractionEvents/ListInfractionEventsPage';
 import ViewInfractionEvent from 'pages/InfractionEvents/ViewInfractionEventPage';
-import InfractionTypesPage from 'pages/InfractionTypesPage/ListInfractionTypesPage';
+import ListInfractionTypesPage from 'pages/InfractionTypesPage/ListInfractionTypesPage';
 import CreateInfractionTypePage from 'pages/InfractionTypesPage/CreateInfractionTypePage';
 import RequireAuth from 'components/RequireAuth';
 import { Routes, Route, Outlet } from 'react-router-dom';
@@ -74,18 +74,18 @@ export default function App() {
               <Route index element={<ListUsersPage authInfo={authInfo} />} />
             </Route>
           </Route>
-          <Route path="devicemanager" element={<RequireAuth authInfo={authInfo}><Outlet /></RequireAuth>}>
-            <Route path="add" element={<AddDevicePage/>} />
-            <Route path=":deviceId/edit" element={<UpdateDevicePage/>} />
+          <Route path="device-manager" element={<RequireAuth authInfo={authInfo}><Outlet /></RequireAuth>}>
+            <Route path="add" element={<AddDevicePage />} />
+            <Route path=":deviceId">
+              <Route path="edit" element={<UpdateDevicePage />} />
+              <Route path="infraction-types" element={<ListInfractionTypesPage />} />
+              <Route path="infraction-types/add" element={<CreateInfractionTypePage />} />
+            </Route>
             <Route index element={<ListDevicesPage/>}/>
           </Route>
           <Route path="infraction-events" element={<RequireAuth authInfo={authInfo}><Outlet /></RequireAuth>}>
             <Route index element={<ListInfractionEventsPage />} />
             <Route path=":infractionEventId/view" element={<ViewInfractionEvent />} />
-          </Route>
-          <Route path="infractionTypes" element={<RequireAuth authInfo={authInfo}><Outlet /></RequireAuth>}>
-            <Route path="add" element={<CreateInfractionTypePage />}/>
-            <Route index element={<InfractionTypesPage />}/>
           </Route>
         </Routes>
       </Container>

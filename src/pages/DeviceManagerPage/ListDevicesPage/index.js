@@ -43,7 +43,7 @@ export default function ListDevicesPage() {
         </Button>
       </td>
       <td className="text-end align-middle" >
-        <Button className="mx-1 w-100" tag={Link} to={`/devicemanager/${device.id}/edit`}>
+        <Button className="mx-1 w-100" tag={Link} to={`/device-manager/${device.id}/edit`}>
           Edit
         </Button>
       </td>
@@ -59,7 +59,7 @@ export default function ListDevicesPage() {
     <div>
       <div className="d-flex justify-content-between align-items-center pb-4">
         <h1 className="fw-bold">Device Manager</h1>
-        <Button tag={Link} to="/devicemanager/add" color="primary" >
+        <Button tag={Link} to="/device-manager/add" color="primary" >
           Add Device
         </Button>
       </div>
@@ -95,7 +95,6 @@ export default function ListDevicesPage() {
           )
         ) : (
           <Spinner />
-          
         )
       }
     </div>

@@ -85,13 +85,8 @@ export default function NavBar({
                   </DropdownMenu>
                 </UncontrolledDropdown>
                 <NavItem>
-                  <NavLink tag={Link} to="/devicemanager">
+                  <NavLink tag={Link} to="/device-manager">
                     Device Manager
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} to="/infractionTypes">
-                    Infraction Types
                   </NavLink>
                 </NavItem>
               </Fragment>

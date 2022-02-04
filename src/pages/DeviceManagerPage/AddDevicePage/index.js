@@ -32,7 +32,7 @@ export default function AddDevicePage() {
 
     return (
         <div>
-            <BackButton to="/devicemanager" />
+            <BackButton to="/device-manager" />
             <h1 className="fw-bold">
                 Add Device
             </h1>
@@ -53,7 +53,7 @@ export default function AddDevicePage() {
                         </ToastHeader>
                         <ToastBody>
                             View your new device located in, {device.location}, &nbsp;
-                            <Link to={`/devicemanager`}>here</Link>
+                            <Link to={`/device-manager`}>here</Link>
                             .
                         </ToastBody>
                         </Toast>
