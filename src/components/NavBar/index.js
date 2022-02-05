@@ -75,7 +75,7 @@ export default function NavBar({
                   <DropdownToggle caret nav>
                     User and Account Management
                   </DropdownToggle>
-                  <DropdownMenu right>
+                  <DropdownMenu end>
                     <DropdownItem tag={Link} to="/account">
                       Account Management
                     </DropdownItem>

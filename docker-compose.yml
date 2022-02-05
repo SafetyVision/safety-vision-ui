@@ -10,3 +10,14 @@ services:
       - .:/code
     ports:
       - 3000:3000
+  test:
+    image: safety-vision-platform_ui-local
+    stdin_open: true
+    tty: true
+    command: npm test
+    volumes:
+      - .:/code
+  test-ci:
+    build:
+      context: .
+    command: npm test -- --watchAll=false
