@@ -5,14 +5,12 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  build-test-and-deploy:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag safetyvision/safety-vision-ui:latest
-    - name: Run unit tests
-      run: docker-compose run test-ci
     - name: Login to Docker
       env:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}

@@ -11,13 +11,16 @@ services:
     ports:
       - 3000:3000
   test:
-    image: safety-vision-platform_ui-local
+    build:
+      context: .
+      dockerfile: Dockerfile.test
     stdin_open: true
     tty: true
     command: npm test
     volumes:
       - .:/code
-  test-ci:
+  test-no-watch:
     build:
       context: .
+      dockerfile: Dockerfile.test
     command: npm test -- --watchAll=false

@@ -5,6 +5,3 @@ COPY package-lock.json .
 COPY jsconfig.json .
 RUN npm install
 COPY . .
-RUN npm test -- --watchAll=false
-RUN npm run build
-EXPOSE 3000
