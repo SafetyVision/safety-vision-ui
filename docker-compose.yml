@@ -24,3 +24,5 @@ services:
       context: .
       dockerfile: Dockerfile.test
     command: npm test -- --watchAll=false
+    volumes:
+      - .:/code
