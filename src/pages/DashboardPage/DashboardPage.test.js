@@ -4,6 +4,6 @@ import DashboardPage from './index';
 describe('Dashboard Page', () => {
   it('should render the Dashboard Page title', async () => {
     render(<DashboardPage />);
-    expect(await screen.findByText('Not Dashboard Page')).toBeInTheDocument();
+    expect(await screen.findByText('Dashboard Page')).toBeInTheDocument();
   });
 });
