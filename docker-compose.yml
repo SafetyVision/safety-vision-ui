@@ -10,3 +10,19 @@ services:
       - .:/code
     ports:
       - 3000:3000
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    stdin_open: true
+    tty: true
+    command: npm test
+    volumes:
+      - .:/code
+  test-no-watch:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    command: npm test -- --watchAll=false
+    volumes:
+      - .:/code
