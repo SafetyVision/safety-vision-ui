@@ -52,7 +52,7 @@ export default function LoginPage({
           Log In
         </h1>
         <FormGroup>
-          <Label>
+          <Label for="email">
             Email
           </Label>
           <Input
@@ -65,7 +65,7 @@ export default function LoginPage({
           />
         </FormGroup>
         <FormGroup>
-          <Label>
+          <Label for="password">
             Password
           </Label>
           <Input
