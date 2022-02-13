@@ -26,4 +26,20 @@ export const handlers = [
       })
     );
   }),
+  rest.post('/api/login', (req, res, ctx) => {
+    if (req.body.username === 'test@email.com' && req.body.password === 'validpassword123') {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          detail: "Success",
+        })
+      );
+    }
+    return res(
+      ctx.status(400),
+      ctx.json({
+        detail: "Invalid credentials"
+      })
+    );
+  }),
 ];
