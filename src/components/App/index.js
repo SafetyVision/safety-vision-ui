@@ -20,12 +20,15 @@ import CreateInfractionTypePage from 'pages/InfractionTypesPage/CreateInfraction
 import RequireAuth from 'components/RequireAuth';
 import { Routes, Route, Outlet } from 'react-router-dom';
 import { Container, Spinner } from 'reactstrap';
+import { NotificationContainer } from 'react-notifications';
 import useAuthInfo from 'hooks/useAuthData';
+import useInfractionEventConsumer from 'hooks/useInfractionEventConsumer';
 
 export default function App() {
   const [isLoaded, setIsLoaded] = useState(false);
   const { authInfo, setIsAuthenticated } = useAuthInfo(setIsLoaded);
 
+  useInfractionEventConsumer(authInfo);
 
   if (!isLoaded) {
     return <Spinner />
@@ -89,6 +92,7 @@ export default function App() {
           </Route>
         </Routes>
       </Container>
+      <NotificationContainer />
     </div>
   );
 }
