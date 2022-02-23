@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'util/axiosConfig';
-import { Button, Form, FormGroup, Label, Input, Toast, ToastBody, ToastHeader } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Toast, ToastBody, ToastHeader, Spinner } from 'reactstrap';
 import BackButton from 'components/BackButton';
 import PermissionDeniedPage from 'pages/ErrorPages/PermissionDeniedPage';
 
@@ -43,7 +43,11 @@ export default function UpdateAccountPage({ authInfo }) {
     });
   };
 
-  if (!authInfo?.currentUser?.isOwner) {
+  if (!originalAccountName) {
+    return <Spinner />;
+  }
+
+  if (!authInfo.currentUser.isOwner) {
     return <PermissionDeniedPage />;
   }
 
