@@ -25,14 +25,18 @@ export default function ViewAccountPage({ authInfo, setIsAuthenticated }) {
       <div>
         <div className="d-flex pb-4 justify-content-between align-items-center flex-wrap flex-row">
           <h1 className="fw-bold">Your Account</h1>
-          <div className="d-flex justify-content-end align-items-center">
-            <Button tag={Link} to="/account/edit" className="m-2">
-              Edit Account
-            </Button>
-            <Button color="danger" onClick={deleteAccount}>
-              Delete Account
-            </Button>
-          </div>
+          {
+            authInfo.currentUser.isOwner && (
+              <div className="d-flex justify-content-end align-items-center">
+                <Button tag={Link} to="/account/edit" className="m-2">
+                  Edit Account
+                </Button>
+                <Button color="danger" onClick={deleteAccount}>
+                  Delete Account
+                </Button>
+              </div>
+            )
+          }
         </div>
         <div style={{ maxWidth: '500px' }} className="border rounded mx-auto p-3">
           <label className="fw-bold pt-3">

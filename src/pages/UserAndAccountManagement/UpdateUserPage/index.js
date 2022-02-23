@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Form, FormGroup, Label, Button, Input, Toast, ToastHeader, ToastBody } from 'reactstrap';
+import { Form, FormGroup, Label, Button, Input, Toast, ToastHeader, ToastBody, Spinner } from 'reactstrap';
 import { useParams } from 'react-router-dom';
 import axios from 'util/axiosConfig';
 import { useNavigate } from 'react-router-dom';
 import BackButton from 'components/BackButton';
+import PermissionDeniedPage from 'pages/ErrorPages/PermissionDeniedPage';
 
-export default function UpdateUserPage({ setIsAuthenticated }) {
+export default function UpdateUserPage({ setIsAuthenticated, authInfo }) {
   const successToastBody = {
     header: 'Password Changed',
     body: 'Your password was changed successfully.',
@@ -31,7 +32,7 @@ export default function UpdateUserPage({ setIsAuthenticated }) {
   const [isPasswordChangeToastOpen, setIsPasswordChangeToastOpen] = useState(false);
   const [passwordChangeToastContent, setPasswordChangeToastContent] = useState(successToastBody);
   const [isEditUserDetailsToastOpen, setIsEditUserDetailsToastOpen] = useState(false);
-  const [originalUserDetails, setOriginalUserDetails] = useState();
+  const [originalUserDetails, setOriginalUserDetails] = useState(null);
 
   useEffect(() => {
     axios.get(`/api/users/${params.userId}`).then((res) => {
@@ -80,6 +81,14 @@ export default function UpdateUserPage({ setIsAuthenticated }) {
       setEmail(originalUserDetails.email);
     })
   };
+
+  if (!originalUserDetails) {
+    return <Spinner />;
+  }
+
+  if (!(authInfo.currentUser.isOwner || authInfo.currentUser.id === originalUserDetails.id)) {
+    return <PermissionDeniedPage />;
+  }
 
   return (
     <div>

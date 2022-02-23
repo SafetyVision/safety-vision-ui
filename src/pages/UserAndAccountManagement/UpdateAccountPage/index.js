@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'util/axiosConfig';
 import { Button, Form, FormGroup, Label, Input, Toast, ToastBody, ToastHeader } from 'reactstrap';
 import BackButton from 'components/BackButton';
+import PermissionDeniedPage from 'pages/ErrorPages/PermissionDeniedPage';
 
 export default function UpdateAccountPage({ authInfo }) {
   const successToastContent = {
@@ -31,7 +32,6 @@ export default function UpdateAccountPage({ authInfo }) {
   const updateAccount = () => {
     axios.patch(`/api/accounts/${authInfo.currentUser.account}`, {
       account_name: accountName.trim(),
-      login_identifier: accountName.toLowerCase(),
     }).then(() => {
       setToastContent(successToastContent);
       setIsOpen(true);
@@ -42,6 +42,10 @@ export default function UpdateAccountPage({ authInfo }) {
       setIsOpen(true);
     });
   };
+
+  if (!authInfo?.currentUser?.isOwner) {
+    return <PermissionDeniedPage />;
+  }
 
   return (
     <div>
