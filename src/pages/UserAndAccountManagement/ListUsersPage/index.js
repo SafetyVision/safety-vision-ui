@@ -2,14 +2,18 @@ import { useEffect, useState } from 'react';
 import axios from 'util/axiosConfig';
 import { Spinner, Table, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import ResourceNotFoundPage from 'pages/ErrorPages/ResourceNotFoundPage';
 
 export default function ListUsersPage({ authInfo }) {
   const [users, setUsers] = useState(null);
+  const [isGetUsersError, setIsGetUsersError] = useState(false);
 
   useEffect(() => {
     if (authInfo.currentUser && users === null) {
       axios.get('/api/users/').then((res) => {
         setUsers(res.data);
+      }).catch(() => {
+        setIsGetUsersError(true);
       });
     }
   }, [authInfo.currentUser, users]);
@@ -32,6 +36,10 @@ export default function ListUsersPage({ authInfo }) {
       </td>
     </tr>
   );
+
+  if (isGetUsersError) {
+    return <ResourceNotFoundPage />;
+  }
 
   return (
     <div>

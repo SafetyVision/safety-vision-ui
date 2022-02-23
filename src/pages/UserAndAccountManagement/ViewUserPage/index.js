@@ -4,6 +4,7 @@ import axios from 'util/axiosConfig';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import BackButton from 'components/BackButton';
 import ConfirmationModal from 'components/ConfirmationModal';
+import ResourceNotFoundPage from 'pages/ErrorPages/ResourceNotFoundPage';
 
 export default function ViewUserPage({ authInfo }) {
   const [user, setUser] = useState(null);
@@ -29,11 +30,11 @@ export default function ViewUserPage({ authInfo }) {
   }, [params.userId])
 
   if (isError) {
-    <h1>Could not get this user's data</h1>
+    return <ResourceNotFoundPage />;
   }
 
   if (!user) {
-    return <Spinner />
+    return <Spinner />;
   }
 
   return (

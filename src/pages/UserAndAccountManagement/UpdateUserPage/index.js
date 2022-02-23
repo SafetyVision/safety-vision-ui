@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'util/axiosConfig';
 import BackButton from 'components/BackButton';
 import PermissionDeniedPage from 'pages/ErrorPages/PermissionDeniedPage';
+import ResourceNotFoundPage from 'pages/ErrorPages/ResourceNotFoundPage';
 
 export default function UpdateUserPage({ setIsAuthenticated, authInfo }) {
   const successPasswordToastBody = {
@@ -42,6 +43,7 @@ export default function UpdateUserPage({ setIsAuthenticated, authInfo }) {
   const [editUserToastContent, setEditUserToastContent] = useState(successEditUserToastBody);
   const [isEditUserDetailsToastOpen, setIsEditUserDetailsToastOpen] = useState(false);
   const [originalUserDetails, setOriginalUserDetails] = useState(null);
+  const [isGetUserError, setIsGetUserError] = useState(false);
 
   useEffect(() => {
     axios.get(`/api/users/${params.userId}`).then((res) => {
@@ -49,6 +51,8 @@ export default function UpdateUserPage({ setIsAuthenticated, authInfo }) {
       setLastName(res.data.last_name);
       setEmail(res.data.email);
       setOriginalUserDetails(res.data);
+    }).catch(() => {
+      setIsGetUserError(true);
     });
   }, [params.userId])
 
@@ -93,6 +97,10 @@ export default function UpdateUserPage({ setIsAuthenticated, authInfo }) {
       setEmail(originalUserDetails.email);
     });
   };
+
+  if (isGetUserError) {
+    return <ResourceNotFoundPage />;
+  }
 
   if (!originalUserDetails) {
     return <Spinner />;
