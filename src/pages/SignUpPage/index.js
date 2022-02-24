@@ -41,7 +41,6 @@ export default function SignUpPage({
     }
     axios.post('/api/accounts/register', {
       account_name: account_name.trim(),
-      login_identifier: account_name.toLowerCase(),
       users: [
         {
           first_name,
@@ -83,7 +82,7 @@ export default function SignUpPage({
   }
 
   return (
-    <div className="mx-auto" style={{ 'max-width': '500px' }}>
+    <div className="mx-auto" style={{ 'maxWidth': '500px' }}>
       <Toast isOpen={isError} className="w-100 mb-3">
         <ToastHeader toggle={() => setIsError(false)}>
           {error.header}
@@ -101,8 +100,8 @@ export default function SignUpPage({
             Company/Organization Name
           </Label>
           <Input
-            id="account_name"
-            name="account_name"
+            id="account"
+            name="account"
             placeholder="Your company/organization"
             value={account_name}
             onChange={(e) => setAccountName(e.target.value)}

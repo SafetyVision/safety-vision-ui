@@ -1,27 +1,37 @@
 import { useEffect, useState } from 'react';
-import { Form, FormGroup, Label, Button, Input, Toast, ToastHeader, ToastBody } from 'reactstrap';
+import { Form, FormGroup, Label, Button, Input, Toast, ToastHeader, ToastBody, Spinner } from 'reactstrap';
 import { useParams } from 'react-router-dom';
 import axios from 'util/axiosConfig';
-import { useNavigate } from 'react-router-dom';
 import BackButton from 'components/BackButton';
+import PermissionDeniedPage from 'pages/ErrorPages/PermissionDeniedPage';
+import ResourceNotFoundPage from 'pages/ErrorPages/ResourceNotFoundPage';
 
-export default function UpdateUserPage({ setIsAuthenticated }) {
-  const successToastBody = {
+export default function UpdateUserPage({ setIsAuthenticated, authInfo }) {
+  const successPasswordToastBody = {
     header: 'Password Changed',
     body: 'Your password was changed successfully.',
-  }
+  };
 
-  const errorToastBody = {
+  const errorPasswordToastBody = {
     header: 'Password change failed',
     body: 'Could not change your password. Ensure you are using a complex password and try again.'
-  }
+  };
 
   const matchPasswordsToastBody = {
     header: 'Passwords do not match',
     body: 'Reenter your password to ensure the passwords match.'
-  }
+  };
 
-  const navigate = useNavigate();
+  const successEditUserToastBody = {
+    header: 'User Updated',
+    body: 'User details were updated successfully'
+  };
+
+  const errorEditUserToastBody = {
+    header: 'Edit User Details Failed',
+    body: 'Could not update user details, try again in a bit.'
+  };
+
   const params = useParams();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -29,9 +39,11 @@ export default function UpdateUserPage({ setIsAuthenticated }) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isPasswordChangeToastOpen, setIsPasswordChangeToastOpen] = useState(false);
-  const [passwordChangeToastContent, setPasswordChangeToastContent] = useState(successToastBody);
+  const [passwordChangeToastContent, setPasswordChangeToastContent] = useState(successPasswordToastBody);
+  const [editUserToastContent, setEditUserToastContent] = useState(successEditUserToastBody);
   const [isEditUserDetailsToastOpen, setIsEditUserDetailsToastOpen] = useState(false);
-  const [originalUserDetails, setOriginalUserDetails] = useState();
+  const [originalUserDetails, setOriginalUserDetails] = useState(null);
+  const [isGetUserError, setIsGetUserError] = useState(false);
 
   useEffect(() => {
     axios.get(`/api/users/${params.userId}`).then((res) => {
@@ -39,7 +51,9 @@ export default function UpdateUserPage({ setIsAuthenticated }) {
       setLastName(res.data.last_name);
       setEmail(res.data.email);
       setOriginalUserDetails(res.data);
-    })
+    }).catch(() => {
+      setIsGetUserError(true);
+    });
   }, [params.userId])
 
   const changePassword = () => {
@@ -48,13 +62,13 @@ export default function UpdateUserPage({ setIsAuthenticated }) {
         password,
       }).then(() => {
         setIsPasswordChangeToastOpen(true);
-        setPasswordChangeToastContent(successToastBody);
+        setPasswordChangeToastContent(successPasswordToastBody);
         setPassword('');
         setConfirmPassword('');
         setIsAuthenticated(false);
       }).catch(() => {
         setIsPasswordChangeToastOpen(true);
-        setPasswordChangeToastContent(errorToastBody);
+        setPasswordChangeToastContent(errorPasswordToastBody);
         setPassword('');
         setConfirmPassword('');
       });
@@ -71,29 +85,44 @@ export default function UpdateUserPage({ setIsAuthenticated }) {
       first_name: firstName,
       last_name: lastName,
       email,
-    }).then(() => {
-      navigate(`/account/users/${params.userId}/view`, { replace: true });
+    }).then((res) => {
+      setOriginalUserDetails(res.data);
+      setEditUserToastContent(successEditUserToastBody);
+      setIsEditUserDetailsToastOpen(true);
     }).catch(() => {
+      setEditUserToastContent(errorEditUserToastBody);
       setIsEditUserDetailsToastOpen(true);
       setFirstName(originalUserDetails.first_name);
       setLastName(originalUserDetails.last_name);
       setEmail(originalUserDetails.email);
-    })
+    });
   };
+
+  if (isGetUserError) {
+    return <ResourceNotFoundPage />;
+  }
+
+  if (!originalUserDetails) {
+    return <Spinner />;
+  }
+
+  if (!(authInfo.currentUser.isOwner || authInfo.currentUser.id === originalUserDetails.id)) {
+    return <PermissionDeniedPage />;
+  }
 
   return (
     <div>
-      <BackButton to="/account/users" />
+      <BackButton to={`/account/users/${params.userId}/view`} />
       <h1 className="fw-bold">
         Edit User
       </h1>
       <Form className="mx-auto mb-5" style={{ maxWidth: '500px' }}>
         <Toast isOpen={isEditUserDetailsToastOpen} className="mb-4 w-100">
           <ToastHeader toggle={() => setIsEditUserDetailsToastOpen(false)}>
-            Edit User Details Failed
+            {editUserToastContent.header}
           </ToastHeader>
           <ToastBody>
-            Could not update user details, try again in a bit.
+            {editUserToastContent.body}
           </ToastBody>
         </Toast>
         <FormGroup>

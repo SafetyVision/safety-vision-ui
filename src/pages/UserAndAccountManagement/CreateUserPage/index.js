@@ -1,10 +1,11 @@
-import { Form, FormGroup, Label, Input, Button, Toast, ToastHeader, ToastBody } from 'reactstrap';
+import { Form, FormGroup, Label, Input, Button, Toast, ToastHeader, ToastBody, Spinner } from 'reactstrap';
 import { useState } from 'react';
 import axios from 'util/axiosConfig';
 import { Link } from 'react-router-dom';
 import BackButton from 'components/BackButton';
+import PermissionDeniedPage from 'pages/ErrorPages/PermissionDeniedPage';
 
-export default function CreateUserPage() {
+export default function CreateUserPage({ authInfo }) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -46,6 +47,14 @@ export default function CreateUserPage() {
       clearPasswords();
     }
   };
+
+  if (!authInfo.currentUser) {
+    return <Spinner />;
+  }
+
+  if (!authInfo.currentUser.isOwner) {
+    return <PermissionDeniedPage />;
+  }
 
   return (
     <div>
