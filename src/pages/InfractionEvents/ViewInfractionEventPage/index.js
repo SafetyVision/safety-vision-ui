@@ -13,6 +13,7 @@ export default function ViewInfractionEvent() {
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
+    setIsLoaded(false);
     axios.get(`/api/infraction_events/${params.infractionEventId}`).then((res) => {
       setInfractionEvent(res.data);
       setIsLoaded(true);

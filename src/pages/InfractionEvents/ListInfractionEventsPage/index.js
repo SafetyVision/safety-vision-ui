@@ -11,6 +11,7 @@ export default function ListInfractionEventsPage() {
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
+    setIsLoaded(false);
     axios.get('/api/infraction_events/').then((res) => {
       setInfractionEvents(res.data);
       setIsLoaded(true);
