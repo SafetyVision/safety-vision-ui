@@ -17,6 +17,7 @@ import ListInfractionEventsPage from 'pages/InfractionEvents/ListInfractionEvent
 import ViewInfractionEvent from 'pages/InfractionEvents/ViewInfractionEventPage';
 import ListInfractionTypesPage from 'pages/InfractionTypesPage/ListInfractionTypesPage';
 import CreateInfractionTypePage from 'pages/InfractionTypesPage/CreateInfractionTypePage';
+import RouteNotFoundPage from 'pages/ErrorPages/RouteNotFoundPage';
 import RequireAuth from 'components/RequireAuth';
 import { Routes, Route, Outlet } from 'react-router-dom';
 import { Container, Spinner } from 'reactstrap';
@@ -90,6 +91,10 @@ export default function App() {
             <Route index element={<ListInfractionEventsPage />} />
             <Route path=":infractionEventId/view" element={<ViewInfractionEvent />} />
           </Route>
+          <Route
+            path="*"
+            element={<RouteNotFoundPage />}
+          />
         </Routes>
       </Container>
       <NotificationContainer />
