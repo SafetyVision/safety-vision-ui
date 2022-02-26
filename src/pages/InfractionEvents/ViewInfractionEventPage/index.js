@@ -16,6 +16,7 @@ export default function ViewInfractionEvent() {
     axios.get(`/api/infraction_events/${params.infractionEventId}`).then((res) => {
       setInfractionEvent(res.data);
       setIsLoaded(true);
+      setIsError(false);
     }).catch(() => {
       setIsError(true);
     });

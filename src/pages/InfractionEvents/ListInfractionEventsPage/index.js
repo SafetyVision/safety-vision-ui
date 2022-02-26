@@ -14,6 +14,9 @@ export default function ListInfractionEventsPage() {
     axios.get('/api/infraction_events/').then((res) => {
       setInfractionEvents(res.data);
       setIsLoaded(true);
+      setIsError(false);
+    }).catch(() => {
+      setIsError(true);
     });
   }, []);
 
