@@ -16,6 +16,19 @@ export default function ListInfractionEventsPage() {
   const mapInfractionEventToTableRow = (infractionEvent) => (
     <tr key={infractionEvent.id}>
       <td className="align-middle">
+        {infractionEvent.id}
+      </td>
+      <td className="align-middle">
+        <Link to={`/locations/${infractionEvent.location.id}/view`} className="text-decoration-none">
+          {infractionEvent.location.description}
+        </Link>
+      </td>
+      <td className="align-middle">
+        <Link to={`/infraction-types/${infractionEvent.infraction_type.id}/view`} className="text-decoration-none">
+          {infractionEvent.infraction_type.infraction_type_name}
+        </Link>
+      </td>
+      <td className="align-middle">
         {formatTimestamp(infractionEvent.infraction_date_time)}
       </td>
       <td className="text-end align-middle">
@@ -36,6 +49,9 @@ export default function ListInfractionEventsPage() {
           <Table striped borderless responsive>
             <thead>
               <tr>
+                <th>ID</th>
+                <th>Location</th>
+                <th>Infraction Type</th>
                 <th>Infraction Time</th>
                 <th />
               </tr>
