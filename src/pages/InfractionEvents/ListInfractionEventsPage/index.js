@@ -3,13 +3,17 @@ import axios from 'util/axiosConfig';
 import { Table, Spinner, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import formatTimestamp from 'util/dates';
+import ResourceNotFoundPage from 'pages/ErrorPages/ResourceNotFoundPage';
 
 export default function ListInfractionEventsPage() {
   const [infractionEvents, setInfractionEvents] = useState(null)
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     axios.get('/api/infraction_events/').then((res) => {
       setInfractionEvents(res.data);
+      setIsLoaded(true);
     });
   }, []);
 
@@ -39,6 +43,14 @@ export default function ListInfractionEventsPage() {
     </tr>
   );
 
+  if (isError) {
+    return <ResourceNotFoundPage />;
+  }
+
+  if (!isLoaded) {
+    return <Spinner />;
+  }
+
   return (
     <div>
       <h1>
@@ -61,7 +73,7 @@ export default function ListInfractionEventsPage() {
             </tbody>
           </Table>
         ) : (
-          <Spinner />
+          <p>No infraction events to show.</p>
         )
       }
     </div>

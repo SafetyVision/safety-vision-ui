@@ -4,16 +4,30 @@ import { useParams, Link } from 'react-router-dom';
 import { Spinner } from 'reactstrap';
 import BackButton from 'components/BackButton';
 import formatTimestamp from 'util/dates';
+import ResourceNotFoundPage from 'pages/ErrorPages/ResourceNotFoundPage';
 
 export default function ViewInfractionEvent() {
   const params = useParams();
   const [infractionEvent, setInfractionEvent] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     axios.get(`/api/infraction_events/${params.infractionEventId}`).then((res) => {
       setInfractionEvent(res.data);
+      setIsLoaded(true);
+    }).catch(() => {
+      setIsError(true);
     });
   }, [params.infractionEventId]);
+
+  if (isError) {
+    return <ResourceNotFoundPage />;
+  }
+
+  if (!isLoaded) {
+    return <Spinner />;
+  }
 
   return (
     <div>
@@ -49,7 +63,7 @@ export default function ViewInfractionEvent() {
             </div>
           </Fragment>
         ) : (
-          <Spinner />
+          <p>Something went wrong.</p>
         )
       }
     </div>
