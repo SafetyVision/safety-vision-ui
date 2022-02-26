@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { Button, Spinner } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import ConfirmationModal from 'components/ConfirmationModal';
-import { BoxArrowUpRight } from 'react-bootstrap-icons';
 
 
 export default function ViewAccountPage({ authInfo, setIsAuthenticated }) {
