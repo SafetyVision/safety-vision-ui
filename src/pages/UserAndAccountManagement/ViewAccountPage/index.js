@@ -4,6 +4,7 @@ import { Button, Spinner } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import ConfirmationModal from 'components/ConfirmationModal';
 
+
 export default function ViewAccountPage({ authInfo, setIsAuthenticated }) {
   const [accountData, setAccountData] = useState(null);
   const [isConfirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
@@ -55,6 +56,12 @@ export default function ViewAccountPage({ authInfo, setIsAuthenticated }) {
           <p>
             {accountData.account_name}
           </p>
+          <label className="fw-bold pt-3">
+            Owner
+          </label>
+          <Link to={`/account/users/${accountData.owner.id}/view`} className="d-block text-decoration-none">
+            {`${accountData.owner.first_name} ${accountData.owner.last_name}`}
+          </Link>
         </div>
       </div>
     );
