@@ -37,7 +37,7 @@ export default function LoginPage({
     if (event.key === 'Enter') login();
   }
 
-  if (authInfo.isAuthenticated) {
+  if (authInfo.currentUser) {
     return <Navigate to="/" />;
   }
 

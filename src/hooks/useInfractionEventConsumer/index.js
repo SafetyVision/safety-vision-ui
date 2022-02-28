@@ -20,7 +20,7 @@ export default function useInfractionEventConsumer(authInfo) {
         );
       }
     }
-    if (!authInfo.isAuthenticated && sseConnection.current) {
+    if (!authInfo.currentUser && sseConnection.current) {
       sseConnection.current.close();
       sseConnection.current = null;
     }

@@ -10,15 +10,8 @@ export default function useAuthData(setIsLoaded) {
   useEffect(() => {
     axios.get('/api/set-csrf/');
     axios.get('/api/test-auth/').then(() => {
-      axios.get('/api/users/me').then((res) => {
-        const user = res?.data || null;
-        setCurrentUser(user);
-        setIsAuthenticated(true);
-        setIsLoaded(true);
-      }).catch((res) => {
-        setIsAuthenticated(false);
-        setIsLoaded(true);
-      });
+      setIsAuthenticated(true);
+      setIsLoaded(true);
     }).catch(() => {
       setIsAuthenticated(false);
       setIsLoaded(true);
@@ -26,7 +19,12 @@ export default function useAuthData(setIsLoaded) {
   }, [setIsLoaded]);
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (isAuthenticated) {
+      axios.get('/api/users/me').then((res) => {
+        const user = res?.data || null;
+        setCurrentUser(user);
+      });
+    } else {
       setCurrentUser(null);
     }
   }, [isAuthenticated]);
