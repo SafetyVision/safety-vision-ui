@@ -17,13 +17,15 @@ import ListInfractionEventsPage from 'pages/InfractionEvents/ListInfractionEvent
 import ViewInfractionEvent from 'pages/InfractionEvents/ViewInfractionEventPage';
 import ListInfractionTypesPage from 'pages/InfractionTypesPage/ListInfractionTypesPage';
 import CreateInfractionTypePage from 'pages/InfractionTypesPage/CreateInfractionTypePage';
-import RouteNotFoundPage from 'pages/ErrorPages/RouteNotFoundPage';
 import RequireAuth from 'components/RequireAuth';
 import { Routes, Route, Outlet } from 'react-router-dom';
 import { Container, Spinner } from 'reactstrap';
 import { NotificationContainer } from 'react-notifications';
 import useAuthInfo from 'hooks/useAuthData';
 import useInfractionEventConsumer from 'hooks/useInfractionEventConsumer';
+import ListLocationsPage from 'pages/LocationManagerPage/ListLocationsPage';
+import AddLocationPage from 'pages/LocationManagerPage/AddLocationPage';
+import UpdateLocationPage from 'pages/LocationManagerPage/UpdateLocationPage';
 
 export default function App() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -78,23 +80,22 @@ export default function App() {
               <Route index element={<ListUsersPage authInfo={authInfo} />} />
             </Route>
           </Route>
-          <Route path="device-manager" element={<RequireAuth authInfo={authInfo}><Outlet /></RequireAuth>}>
-            <Route path="add" element={<AddDevicePage />} />
-            <Route path=":deviceId">
-              <Route path="edit" element={<UpdateDevicePage />} />
+          <Route path="location-manager" element={<RequireAuth authInfo={authInfo}><Outlet /></RequireAuth>}>
+            <Route path="add" element={<AddLocationPage />} />
+            <Route path=":locationId">
+              <Route path="edit" element={<UpdateLocationPage />} />
               <Route path="infraction-types" element={<ListInfractionTypesPage />} />
               <Route path="infraction-types/add" element={<CreateInfractionTypePage />} />
+              <Route path="device">
+                <Route path=":deviceSerialNumber" element={<UpdateDevicePage/>}/>
+              </Route>
             </Route>
-            <Route index element={<ListDevicesPage/>}/>
+            <Route index element={<ListLocationsPage/>}/>
           </Route>
           <Route path="infraction-events" element={<RequireAuth authInfo={authInfo}><Outlet /></RequireAuth>}>
             <Route index element={<ListInfractionEventsPage />} />
             <Route path=":infractionEventId/view" element={<ViewInfractionEvent />} />
           </Route>
-          <Route
-            path="*"
-            element={<RouteNotFoundPage />}
-          />
         </Routes>
       </Container>
       <NotificationContainer />

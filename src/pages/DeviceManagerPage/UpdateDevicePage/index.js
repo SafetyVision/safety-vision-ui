@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 export default function UpdateDevicePage() {
   const successToastContent = {
     header: 'Device Updated',
-    body: 'Your device was successfully updated.',
+    body: 'Your device was successfully updated. Click the back button to see changes.',
   };
 
   const errorToastContent = {
@@ -16,29 +16,30 @@ export default function UpdateDevicePage() {
     body: 'Try again with a valid Device details.',
   }
 
-  const [location, setLocation] = useState('');
+  const [description, setDescription] = useState('');
   const [isOpen, setIsOpen] = useState(false);
-  const [originalLocation, setOriginalLocation] = useState('');
+  const [originalDescription, setOriginalDescription] = useState('');
   const [toastContent, setToastContent] = useState(successToastContent);
-  const { deviceId } = useParams();
+  const { locationId, deviceSerialNumber } = useParams();
 
   useEffect(() => {
-    axios.get(`/api/devices/${deviceId}`).then((res) => {
-      setLocation(res.data.location);
-      setOriginalLocation(res.data.location);
+    axios.get(`/api/devices/${deviceSerialNumber}`).then((res) => {
+      setDescription(res.data.description);
+      setOriginalDescription(res.data.description);
     });
-  }, [deviceId]);
+  }, [deviceSerialNumber]);
 
   const updateDevice = () => {
     setIsOpen(false);
-    axios.patch(`/api/devices/${deviceId}`, {
-      location: location.trim(),
+    axios.patch(`/api/devices/${deviceSerialNumber}`, {
+      description: description.trim(),
+      location: locationId
     }).then(() => {
       setToastContent(successToastContent);
       setIsOpen(true);
-      setOriginalLocation(location);
+      setOriginalDescription(description);
     }).catch(() => {
-      setLocation(originalLocation);
+      setDescription(originalDescription);
       setToastContent(errorToastContent);
       setIsOpen(true);
     });
@@ -46,20 +47,8 @@ export default function UpdateDevicePage() {
 
   return (
     <div>
-      <BackButton to="/device-manager" />
-      <Row className="d-flex justify-content-between align-items-center pb-4">
-        <Col>
-          <h1 className="fw-bold">Edit Device</h1>
-        </Col>
-        <Col className="d-flex justify-content-end">
-          <Button tag={Link} to={`/device-manager/${deviceId}/infraction-types`} color="primary" className="mx-2">
-            View Infraction Types
-          </Button>
-          <Button tag={Link} to={`/device-manager/${deviceId}/infraction-types/add`} color="primary">
-            Add Infraction Type
-          </Button>
-        </Col>
-      </Row>
+      <BackButton to={`/location-manager/${locationId}/edit`} />
+      <h1 className="fw-bold">Edit Device</h1>
       <Form style={{ maxWidth: '500px' }} className="mx-auto">
         <Toast isOpen={isOpen} className="w-100 mb-3">
           <ToastHeader toggle={() => setIsOpen(false)}>
@@ -71,11 +60,11 @@ export default function UpdateDevicePage() {
         </Toast>
         <FormGroup>
           <Label>
-            Device Location
+            Device Description
           </Label>
           <Input
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             style={{ maxWidth: '500px' }}
           />
         </FormGroup>
