@@ -10,13 +10,12 @@ import UpdateAccountPage from 'pages/UserAndAccountManagement/UpdateAccountPage'
 import UpdateUserPage from 'pages/UserAndAccountManagement/UpdateUserPage';
 import ViewAccountPage from 'pages/UserAndAccountManagement/ViewAccountPage';
 import ViewUserPage from 'pages/UserAndAccountManagement/ViewUserPage';
-import ListDevicesPage from 'pages/DeviceManagerPage/ListDevicesPage';
-import AddDevicePage from 'pages/DeviceManagerPage/AddDevicePage';
-import UpdateDevicePage from 'pages/DeviceManagerPage/UpdateDevicePage';
+import UpdateDevicePage from 'pages/LocationManagerPage/UpdateDevicePage';
 import ListInfractionEventsPage from 'pages/InfractionEvents/ListInfractionEventsPage';
 import ViewInfractionEvent from 'pages/InfractionEvents/ViewInfractionEventPage';
 import ListInfractionTypesPage from 'pages/InfractionTypesPage/ListInfractionTypesPage';
 import CreateInfractionTypePage from 'pages/InfractionTypesPage/CreateInfractionTypePage';
+import RouteNotFoundPage from 'pages/ErrorPages/RouteNotFoundPage';
 import RequireAuth from 'components/RequireAuth';
 import { Routes, Route, Outlet } from 'react-router-dom';
 import { Container, Spinner } from 'reactstrap';
@@ -95,6 +94,10 @@ export default function App() {
           <Route path="infraction-events" element={<RequireAuth authInfo={authInfo}><Outlet /></RequireAuth>}>
             <Route index element={<ListInfractionEventsPage />} />
             <Route path=":infractionEventId/view" element={<ViewInfractionEvent />} />
+            <Route
+              path="*"
+              element={<RouteNotFoundPage />}
+            />
           </Route>
         </Routes>
       </Container>

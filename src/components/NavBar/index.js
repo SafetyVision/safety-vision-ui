@@ -71,6 +71,11 @@ export default function NavBar({
                     Infraction Events
                   </NavLink>
                 </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} to="/location-manager">
+                    Location Manager
+                  </NavLink>
+                </NavItem>
                 <UncontrolledDropdown inNavbar nav>
                   <DropdownToggle caret nav>
                     User and Account Management
@@ -84,11 +89,6 @@ export default function NavBar({
                     </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
-                <NavItem>
-                  <NavLink tag={Link} to="/location-manager">
-                    Location Manager
-                  </NavLink>
-                </NavItem>
               </Fragment>
             )
           }
