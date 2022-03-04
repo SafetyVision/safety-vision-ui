@@ -34,7 +34,7 @@ export default function ViewInfractionEvent() {
   return (
     <div>
       <BackButton to="/infraction-events" />
-      <h1 className="mb-2">
+      <h1 className="mb-2 fw-bold">
         Infraction Event #{params.infractionEventId}
       </h1>
       {
@@ -49,22 +49,30 @@ export default function ViewInfractionEvent() {
             <label className="fw-bold pt-3">
               Infraction Type
             </label>
-            <Link to={`/infraction-types/${infractionEvent.infraction_type.id}/view`} className="d-block text-decoration-none">
+            <Link
+              to={`/infraction-types/${infractionEvent.infraction_type.id}/view`}
+              className="d-block text-decoration-none"
+            >
               {infractionEvent.infraction_type.infraction_type_name}
             </Link>
             <label className="fw-bold pt-3">
               Location
             </label>
-            <Link to={`/location-manager/${infractionEvent.location.id}/edit`} className="d-block text-decoration-none mb-5">
+            <Link
+              to={`/location-manager/${infractionEvent.location.id}/edit`}
+              className="d-block text-decoration-none mb-5"
+            >
               {infractionEvent.location.description}
             </Link>
             {
-              infractionEvent.infraction_video.file && (
+              infractionEvent?.infraction_video?.file ? (
                 <div className="w-100 d-flex justify-content-center">
                   <video controls key={infractionEvent.id} className="w-100" style={{ maxWidth: '1000px' }}>
                     <source src={infractionEvent.infraction_video.file} type="video/mp4" />
                   </video>
                 </div>
+              ) : (
+                <p>There is no video clip available for the this infraction event.</p>
               )
             }
           </Fragment>

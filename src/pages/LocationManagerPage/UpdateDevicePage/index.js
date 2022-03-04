@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 import axios from 'util/axiosConfig';
-import { Button, Form, FormGroup, Label, Input, Toast, ToastBody, ToastHeader, Row, Col } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Toast, ToastBody, ToastHeader } from 'reactstrap';
 import BackButton from 'components/BackButton';
-import { Link } from 'react-router-dom';
 
 export default function UpdateDevicePage() {
   const successToastContent = {

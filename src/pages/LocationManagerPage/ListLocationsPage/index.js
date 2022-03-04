@@ -37,10 +37,6 @@ export default function ListLocationsPage() {
     });
   }
 
-  const buttonStyle = {
-    'margin-left': '8px'
-  }
-
   const locationsTable = (locations) => (
     <div>
       <Table striped borderless responsive>
@@ -53,7 +49,7 @@ export default function ListLocationsPage() {
           {locations.map(mapLocationToTableRow)}
         </tbody>
       </Table>
-      <Modal isOpen={liveFeedDevices} toggle={handleCloseLiveFeed} size="xl">
+      <Modal isOpen={!!liveFeedDevices} toggle={handleCloseLiveFeed} size="xl">
         <ModalHeader toggle={handleCloseLiveFeed}>
           {liveFeedLocation ? "Monitor [ " + liveFeedLocation.description + " ]": ""}
         </ModalHeader>
@@ -67,20 +63,19 @@ export default function ListLocationsPage() {
     </div>
   );
 
-
   const mapLocationToTableRow = (location) => (
     <tr key={location.id}>
       <td className="align-middle">
         {location.description}
       </td>
       <td className="text-end align-middle">
-        <Button style={buttonStyle} color="primary" onClick={() => handleShowLiveFeed(location)}>
+        <Button className="mx-1" color="primary" onClick={() => handleShowLiveFeed(location)}>
           Monitor
         </Button>
-        <Button style={buttonStyle} tag={Link} to={`/location-manager/${location.id}/edit`}>
+        <Button className="mx-1" tag={Link} to={`/location-manager/${location.id}/edit`}>
           Edit
         </Button>
-        <Button style={buttonStyle} color="danger" onClick={() => deleteLocation(location.id)}>
+        <Button className="mx-1" color="danger" onClick={() => deleteLocation(location.id)}>
           Delete
         </Button>
       </td>
@@ -88,7 +83,7 @@ export default function ListLocationsPage() {
   );
 
   const mapLiveFeedDevices = (device) => (
-    <div>
+    <div key={device.serial_number}>
       <LiveFeed url={device ? device.stream_url : null} />
     </div>
   );

@@ -124,13 +124,9 @@ export default function UpdateLocationPage() {
     setLiveFeedDevice(device);
   }
 
-  const buttonStyle = {
-    'margin-left': '8px',
-  }
-
   const formStyle = {
     maxWidth: '500px',
-    'margin-bottom': '40px'
+    marginBottom: '40px'
   }
 
   const locationToast = (isLocationToastOpen, locationToastContent) => (
@@ -169,7 +165,7 @@ export default function UpdateLocationPage() {
           {devices.map(mapDeviceToTableRow)}
         </tbody>
       </Table>
-      <Modal isOpen={liveFeedDevice} toggle={() => setLiveFeedDevice(null)} size="xl">
+      <Modal isOpen={!!liveFeedDevice} toggle={() => setLiveFeedDevice(null)} size="xl">
         <ModalHeader toggle={() => setLiveFeedDevice(null)}>
           {liveFeedDevice ? `Livefeed of Device [ ${liveFeedDevice.serial_number} ]`: ""}
         </ModalHeader>
@@ -189,16 +185,16 @@ export default function UpdateLocationPage() {
         {device.description}
       </td>
       <td className="text-end align-middle">
-        <Button style={buttonStyle} color="primary" onClick={() => handleShowLiveFeed(device)}>
+        <Button className="mx-2" color="primary" onClick={() => handleShowLiveFeed(device)}>
           Live View
         </Button>
-        <Button tag={Link} to={`/training/${device.serial_number}/view`} style={buttonStyle}>
+        <Button tag={Link} to={`/training/${device.serial_number}/view`} className="mx-2">
           Infraction Detection Settings
         </Button>
-        <Button style={buttonStyle} tag={Link} to={`/location-manager/${locationId}/device/${device.serial_number}`}>
+        <Button className="mx-2" tag={Link} to={`/location-manager/${locationId}/device/${device.serial_number}`}>
           Edit Description
         </Button>
-        <Button style={buttonStyle} color="danger" onClick={() => deleteDevice(device.serial_number)}>
+        <Button className="mx-2" color="danger" onClick={() => deleteDevice(device.serial_number)}>
           Delete
         </Button>
       </td>
@@ -219,7 +215,6 @@ export default function UpdateLocationPage() {
           <Input
             value={locationDescription}
             onChange={(e) => setLocationDescription(e.target.value)}
-            style={{ maxWidth: '500px' }}
           />
         </FormGroup>
         <Button color="primary" onClick={updateLocation} className="w-100">Update Location</Button>

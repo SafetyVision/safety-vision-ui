@@ -57,11 +57,11 @@ export default function ListInfractionEventsPage() {
 
   return (
     <div>
-      <h1>
+      <h1 className="fw-bold">
         Infraction Events
       </h1>
       {
-        infractionEvents ? (
+        infractionEvents?.length ? (
           <Table striped borderless responsive>
             <thead>
               <tr>

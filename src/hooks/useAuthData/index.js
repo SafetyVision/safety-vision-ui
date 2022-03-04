@@ -11,7 +11,6 @@ export default function useAuthData(setIsLoaded) {
     axios.get('/api/set-csrf/');
     axios.get('/api/test-auth/').then(() => {
       setIsAuthenticated(true);
-      setIsLoaded(true);
     }).catch(() => {
       setIsAuthenticated(false);
       setIsLoaded(true);
@@ -23,11 +22,15 @@ export default function useAuthData(setIsLoaded) {
       axios.get('/api/users/me').then((res) => {
         const user = res?.data || null;
         setCurrentUser(user);
+        setIsLoaded(true);
+      }).catch(() => {
+        setCurrentUser(null);
+        setIsLoaded(true);
       });
     } else {
       setCurrentUser(null);
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, setIsLoaded]);
 
   return {
     authInfo: {
