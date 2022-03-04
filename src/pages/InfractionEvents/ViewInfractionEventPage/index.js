@@ -59,12 +59,14 @@ export default function ViewInfractionEvent() {
               {infractionEvent.location.description}
             </Link>
             {
-              infractionEvent.infraction_video.file && (
+              infractionEvent?.infraction_video?.file ? (
                 <div className="w-100 d-flex justify-content-center">
                   <video controls key={infractionEvent.id} className="w-100" style={{ maxWidth: '1000px' }}>
                     <source src={infractionEvent.infraction_video.file} type="video/mp4" />
                   </video>
                 </div>
+              ) : (
+                <p>There is no video clip available for the this infraction event.</p>
               )
             }
           </Fragment>
