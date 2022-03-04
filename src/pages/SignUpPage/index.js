@@ -77,7 +77,7 @@ export default function SignUpPage({
     });
   };
 
-  if (authInfo.isAuthenticated) {
+  if (authInfo.currentUser) {
     return <Navigate to="/" />;
   }
 

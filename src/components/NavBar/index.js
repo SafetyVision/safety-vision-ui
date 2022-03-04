@@ -46,7 +46,7 @@ export default function NavBar({
       <Collapse isOpen={isOpen} navbar>
         <Nav navbar className="me-auto">
           {
-            !authInfo.isAuthenticated ? (
+            !authInfo.currentUser ? (
               <Fragment>
                 <NavItem>
                   <NavLink tag={Link} to="/login">
@@ -94,7 +94,7 @@ export default function NavBar({
           }
         </Nav>
         {
-          authInfo.isAuthenticated && (
+          authInfo.currentUser && (
             <Button onClick={logout}>
               Logout
             </Button>

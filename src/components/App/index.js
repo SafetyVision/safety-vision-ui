@@ -49,7 +49,7 @@ export default function App() {
           <Route
             path="/"
             element={
-              authInfo.isAuthenticated ? (
+              authInfo.currentUser ? (
                 <RequireAuth authInfo={authInfo}>
                   <DashboardPage />
                 </RequireAuth>
