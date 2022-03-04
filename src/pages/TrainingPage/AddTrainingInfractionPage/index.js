@@ -42,7 +42,7 @@ export default function AddTrainingInfractionPage() {
     axios.get(`/api/devices/${params.deviceId}`).then((res) => {
       setStreamUrl(res.data.stream_url);
     });
-  });
+  }, [params.deviceId]);
 
   const addInfractionType = () => {
       axios.post(`/api/devices/${params.deviceId}/infraction_types/`, {
