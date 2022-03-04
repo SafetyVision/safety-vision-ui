@@ -49,13 +49,19 @@ export default function ViewInfractionEvent() {
             <label className="fw-bold pt-3">
               Infraction Type
             </label>
-            <Link to={`/infraction-types/${infractionEvent.infraction_type.id}/view`} className="d-block text-decoration-none">
+            <Link
+              to={`/infraction-types/${infractionEvent.infraction_type.id}/view`}
+              className="d-block text-decoration-none"
+            >
               {infractionEvent.infraction_type.infraction_type_name}
             </Link>
             <label className="fw-bold pt-3">
               Location
             </label>
-            <Link to={`/location-manager/${infractionEvent.location.id}/edit`} className="d-block text-decoration-none mb-5">
+            <Link
+              to={`/location-manager/${infractionEvent.location.id}/edit`}
+              className="d-block text-decoration-none mb-5"
+            >
               {infractionEvent.location.description}
             </Link>
             {
