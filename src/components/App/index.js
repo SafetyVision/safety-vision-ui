@@ -94,11 +94,11 @@ export default function App() {
           <Route path="infraction-events" element={<RequireAuth authInfo={authInfo}><Outlet /></RequireAuth>}>
             <Route index element={<ListInfractionEventsPage />} />
             <Route path=":infractionEventId/view" element={<ViewInfractionEvent />} />
-            <Route
-              path="*"
-              element={<RouteNotFoundPage />}
-            />
           </Route>
+          <Route
+            path="*"
+            element={<RouteNotFoundPage />}
+          />
         </Routes>
       </Container>
       <NotificationContainer />
