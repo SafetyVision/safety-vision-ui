@@ -1,12 +1,12 @@
 import { Form, FormGroup, Label, Input, Button, Toast, ToastHeader, ToastBody, Spinner } from 'reactstrap';
 import { useEffect, useState } from 'react';
 import axios from 'util/axiosConfig';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import BackButton from 'components/BackButton';
 import { removeAssignedInfractions } from '../helper';
 import LiveFeed from 'components/LiveFeed';
 
-export default function AddTrainingInfractionPage({ authInfo }) {
+export default function AddTrainingInfractionPage() {
   const [allInfractionTypes, setAllInfractionTypes] = useState(null);
   const [trainingModels, setTrainingModels] = useState(null);
   const [streamDelay, setStreamDelay] = useState(0);
@@ -17,8 +17,12 @@ export default function AddTrainingInfractionPage({ authInfo }) {
   const [isError, setIsError] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const params = useParams();
+
   const clearForm = () => {
     setInfractionType('');
+    setNumberCaptures(0);
+    setBetweenCaptures(0);
+    setStreamDelay(0);
   }
 
   useEffect(() => {
@@ -47,7 +51,6 @@ export default function AddTrainingInfractionPage({ authInfo }) {
         number_captures: numberCaptures,
         between_captures: betweenCaptures,
         stream_delay: streamDelay,
-        
       }).then((res) => {
         clearForm();
         setIsSuccess(true);
@@ -55,10 +58,10 @@ export default function AddTrainingInfractionPage({ authInfo }) {
       }).catch(() => {
         setIsError(true);
       })
-  } 
+  }
 
   // Used to wait for the fetches to load before rendering
-  if (allInfractionTypes === null || trainingModels === null) { 
+  if (allInfractionTypes === null || trainingModels === null) {
     return <Spinner />;
   }
 
@@ -83,6 +86,13 @@ export default function AddTrainingInfractionPage({ authInfo }) {
               <ToastHeader toggle={() => setIsSuccess(false)}>
                 Infraction Type Assigned Successfully
               </ToastHeader>
+              <ToastBody>
+                Start your training session&nbsp;
+                <Link to={`/training/${params.deviceId}/${infractionType.infraction_type}/train`}>
+                  here
+                </Link>
+                .
+              </ToastBody>
             </Toast>
           )
         }
@@ -100,7 +110,7 @@ export default function AddTrainingInfractionPage({ authInfo }) {
 
         </FormGroup>
         <FormGroup>
-        <Label>Number of Captures</Label>
+          <Label>Number of Captures</Label>
           <Input
             value={numberCaptures}
             onChange={(e) => setNumberCaptures(e.target.value.trim())}
@@ -110,17 +120,17 @@ export default function AddTrainingInfractionPage({ authInfo }) {
           />
         </FormGroup>
         <FormGroup>
-        <Label>Time Between Captures (ms)</Label>
+          <Label>Time Between Captures (ms)</Label>
           <Input
             value={betweenCaptures}
             onChange={(e) => setBetweenCaptures(e.target.value.trim())}
-            placeholder="Enter the number of captures"
+            placeholder="Enter the time between each capture"
             type="number"
             min="0"
           />
         </FormGroup>
         <FormGroup>
-        <Label>Stream Delay (s)</Label>
+          <Label>Stream Delay (s)</Label>
           <Input
             value={streamDelay}
             onChange={(e) => setStreamDelay(e.target.value.trim())}
@@ -129,6 +139,10 @@ export default function AddTrainingInfractionPage({ authInfo }) {
             min="0"
           />
         </FormGroup>
+        <p>
+          Please use the stream window below to estimate the stream's delay.
+          This will help increase the infraction event time accuracy when infractions are detected.
+        </p>
         <LiveFeed url={streamUrl} />
         <Button className="w-100" color="primary" onClick={addInfractionType}>
           Assign Infraction Type

@@ -192,11 +192,11 @@ export default function UpdateLocationPage() {
         <Button style={buttonStyle} color="primary" onClick={() => handleShowLiveFeed(device)}>
           Live View
         </Button>
-        <Button style={buttonStyle}>
-          Train
+        <Button tag={Link} to={`/training/${device.serial_number}/view`} style={buttonStyle}>
+          Infraction Detection Settings
         </Button>
         <Button style={buttonStyle} tag={Link} to={`/location-manager/${locationId}/device/${device.serial_number}`}>
-          Edit
+          Edit Description
         </Button>
         <Button style={buttonStyle} color="danger" onClick={() => deleteDevice(device.serial_number)}>
           Delete

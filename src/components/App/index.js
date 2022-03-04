@@ -14,7 +14,9 @@ import UpdateDevicePage from 'pages/LocationManagerPage/UpdateDevicePage';
 import ListInfractionEventsPage from 'pages/InfractionEvents/ListInfractionEventsPage';
 import ViewInfractionEvent from 'pages/InfractionEvents/ViewInfractionEventPage';
 import ListInfractionTypesPage from 'pages/InfractionTypesPage/ListInfractionTypesPage';
+import ViewInfractionTypePage from 'pages/InfractionTypesPage/ViewInfractionTypePage';
 import CreateInfractionTypePage from 'pages/InfractionTypesPage/CreateInfractionTypePage';
+import EditInfractionTypePage from 'pages/InfractionTypesPage/EditInfractionTypePage';
 import AddTrainingInfractionPage from 'pages/TrainingPage/AddTrainingInfractionPage';
 import ListTrainingInfractionsPage from 'pages/TrainingPage/ListTrainingInfractionsPage';
 import TrainInfractionPage from 'pages/TrainingPage/TrainInfractionPage';
@@ -86,8 +88,6 @@ export default function App() {
             <Route path="add" element={<AddLocationPage />} />
             <Route path=":locationId">
               <Route path="edit" element={<UpdateLocationPage />} />
-              <Route path="infraction-types" element={<ListInfractionTypesPage />} />
-              <Route path="infraction-types/add" element={<CreateInfractionTypePage />} />
               <Route path="device">
                 <Route path=":deviceSerialNumber" element={<UpdateDevicePage/>}/>
               </Route>
@@ -106,6 +106,12 @@ export default function App() {
                 <Route path="train" index element={<TrainInfractionPage />} />
               </Route>
             </Route>
+          </Route>
+          <Route path="infraction-types" element={<RequireAuth authInfo={authInfo}><Outlet /></RequireAuth>}>
+            <Route path="add" element={<CreateInfractionTypePage />} />
+            <Route path=":infractionTypeId/view" element={<ViewInfractionTypePage />} />
+            <Route path=":infractionTypeId/edit" element={<EditInfractionTypePage />} />
+            <Route index element={<ListInfractionTypesPage />} />
           </Route>
           <Route
             path="*"

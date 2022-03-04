@@ -72,6 +72,11 @@ export default function NavBar({
                   </NavLink>
                 </NavItem>
                 <NavItem>
+                  <NavLink tag={Link} to="/infraction-types">
+                    Infraction Types
+                  </NavLink>
+                </NavItem>
+                <NavItem>
                   <NavLink tag={Link} to="/location-manager">
                     Location Manager
                   </NavLink>

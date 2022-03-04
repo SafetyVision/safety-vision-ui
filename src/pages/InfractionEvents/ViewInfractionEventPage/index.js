@@ -47,22 +47,26 @@ export default function ViewInfractionEvent() {
               {formatTimestamp(infractionEvent.infraction_date_time)}
             </p>
             <label className="fw-bold pt-3">
-              Location
+              Infraction Type
             </label>
-            <Link to={`/locations/${infractionEvent.infraction_type.id}/view`} className="d-block text-decoration-none">
+            <Link to={`/infraction-types/${infractionEvent.infraction_type.id}/view`} className="d-block text-decoration-none">
               {infractionEvent.infraction_type.infraction_type_name}
             </Link>
             <label className="fw-bold pt-3">
-              Infraction Type
+              Location
             </label>
-            <Link to={`/infraction-types/${infractionEvent.location.id}/view`} className="d-block text-decoration-none mb-5">
+            <Link to={`/location-manager/${infractionEvent.location.id}/edit`} className="d-block text-decoration-none mb-5">
               {infractionEvent.location.description}
             </Link>
-            <div className="w-100 d-flex justify-content-center">
-              <video controls key={infractionEvent.id} className="w-100" style={{ maxWidth: '1000px' }}>
-                <source src={infractionEvent.infraction_video.file} type="video/mp4" />
-              </video>
-            </div>
+            {
+              infractionEvent.infraction_video.file && (
+                <div className="w-100 d-flex justify-content-center">
+                  <video controls key={infractionEvent.id} className="w-100" style={{ maxWidth: '1000px' }}>
+                    <source src={infractionEvent.infraction_video.file} type="video/mp4" />
+                  </video>
+                </div>
+              )
+            }
           </Fragment>
         ) : (
           <p>Something went wrong.</p>
