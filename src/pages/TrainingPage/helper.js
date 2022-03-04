@@ -21,10 +21,10 @@ export const TrainingStatesVerbose = {
         Demonstrate the infraction being committed when you click Continue Training`,
     'committing_2': 'Training State: Commiting Infraction (Round 2)',
     'done_committing_2': `Training State: Completed Commiting Infraction (Round 2) -
-    Demonstrate the infraction not being committed when you click Continue Training`,
+        Demonstrate the infraction not being committed when you click Continue Training`,
     'not_committing_2': 'Training State: Not Committing Infraction (Round 2)',
     'done_not_committing_2': `Training State: Completed Not Commiting Infraction (Round 2) - You are finished
-        providing training data. Check back here when your we have finished training your device.`,
+        providing training data. Check back here when we have finished training your device.`,
     'trained': 'Trained',
 };
 
