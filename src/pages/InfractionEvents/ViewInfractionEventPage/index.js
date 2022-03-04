@@ -34,7 +34,7 @@ export default function ViewInfractionEvent() {
   return (
     <div>
       <BackButton to="/infraction-events" />
-      <h1 className="mb-2">
+      <h1 className="mb-2 fw-bold">
         Infraction Event #{params.infractionEventId}
       </h1>
       {
