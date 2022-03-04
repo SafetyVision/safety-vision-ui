@@ -16,7 +16,7 @@ export default function useInfractionEventConsumer(authInfo) {
           'Click me to view.',
           'New safety infraction detected',
           5000,
-          () => { navigate(`infraction-events/${infraction_event}/view`, { replace: true }) }
+          () => { navigate(`/infraction-events/${infraction_event}/view`, { replace: true }) }
         );
       }
     }

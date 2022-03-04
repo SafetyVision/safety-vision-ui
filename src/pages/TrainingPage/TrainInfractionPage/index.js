@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import axios from 'util/axiosConfig';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Spinner, Button, Alert } from 'reactstrap';
 import BackButton from 'components/BackButton';
 import LiveFeed from 'components/LiveFeed';
@@ -13,6 +13,7 @@ export default function TrainInfractionsPage() {
     const [isWaiting, setIsWaiting] = useState(false);
     const [isComplete, setIsComplete] = useState(false);
     const params = useParams();
+    const navigate = useNavigate();
     const sseConnection = useRef(null);
 
     const refreshTrainingModel = () => {
@@ -42,6 +43,9 @@ export default function TrainInfractionsPage() {
 
     useEffect(() => {
       axios.get(`/api/devices/${params.deviceId}`).then((res) => {
+        if (!res.data.stream_url) {
+          navigate(`/training/${res.data.serial_number}/view`, { replace: true })
+        }
         setStreamUrl(res.data.stream_url);
       });
     });
@@ -76,7 +80,7 @@ export default function TrainInfractionsPage() {
     }
 
     // Used to wait for the fetches to load before rendering
-    if (!trainingModel || !infraction) {
+    if (!trainingModel || !infraction || !streamUrl) {
       return <Spinner />;
     }
 
