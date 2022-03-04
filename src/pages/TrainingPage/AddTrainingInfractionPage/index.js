@@ -1,4 +1,4 @@
-import { Form, FormGroup, Label, Input, Button, Toast, ToastHeader, ToastBody, Spinner } from 'reactstrap';
+import { Form, FormGroup, Label, Input, Button, Toast, ToastHeader, ToastBody, Spinner, Alert } from 'reactstrap';
 import { useEffect, useState } from 'react';
 import axios from 'util/axiosConfig';
 import { useParams, Link } from 'react-router-dom';
@@ -68,6 +68,13 @@ export default function AddTrainingInfractionPage() {
   return (
     <div>
       <BackButton to={`/training/${params.deviceId}/view/`}/>
+      {
+        !streamUrl && (
+          <Alert color="danger">
+            This device is not streaming so you can't train it on new infraction types.
+          </Alert>
+        )
+      }
       <h1 className="fw-bold">
         Assign Infraction Type
       </h1>
@@ -144,7 +151,7 @@ export default function AddTrainingInfractionPage() {
           This will help increase the infraction event time accuracy when infractions are detected.
         </p>
         <LiveFeed url={streamUrl} />
-        <Button className="w-100" color="primary" onClick={addInfractionType}>
+        <Button className="w-100" color="primary" onClick={addInfractionType} disabled={!streamUrl}>
           Assign Infraction Type
         </Button>
       </Form>

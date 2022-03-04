@@ -61,7 +61,7 @@ export default function ListInfractionEventsPage() {
         Infraction Events
       </h1>
       {
-        infractionEvents ? (
+        infractionEvents?.length ? (
           <Table striped borderless responsive>
             <thead>
               <tr>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'util/axiosConfig';
-import { Spinner, Table, Button } from 'reactstrap';
+import { Spinner, Table, Button, Alert } from 'reactstrap';
 import { Link, useParams } from 'react-router-dom';
 import BackButton from 'components/BackButton';
 import { TrainingStates } from '../helper';
@@ -17,12 +17,12 @@ export default function ListTrainingInfractionsPage() {
         setDevice(res.data);
       });
     }
-    if (trainingModels === null) {
+    if (!trainingModels) {
       axios.get(`/api/devices/${params.deviceId}/infraction_types/`).then((res) => {
         setTrainingModels(res.data);
       });
     }
-    if (infractionTypes === null){
+    if (!infractionTypes){
       axios.get('/api/infraction_types/').then((res) => {
         setInfractionTypes(res.data);
       });
@@ -40,7 +40,7 @@ export default function ListTrainingInfractionsPage() {
   const mapInfractionToTableRow = (trainingModel) => (
       <tr key={trainingModel.infraction_type}>
         <td className="align-middle">
-          {infractionTypes[infractionTypes.map(e => e.id).indexOf(trainingModel.infraction_type)].infraction_type_name}
+          {infractionTypes[infractionTypes.map(type => type.id).indexOf(trainingModel.infraction_type)].infraction_type_name}
         </td>
         <td className="align-middle">
           {TrainingStates[trainingModel.training_state]}
@@ -49,9 +49,20 @@ export default function ListTrainingInfractionsPage() {
           {trainingModel.is_predicting ? 'Active' : 'Inactive'}
         </td>
         <td className="text-end align-middle">
-          <Button className="w-100" color="primary" tag={Link} to={`/training/${params.deviceId}/${trainingModel.infraction_type}/train`}>
-            Train
-          </Button>
+          {
+            trainingModel.training_state !== 'trained' && (
+              <Button
+                id={`trainButton${trainingModel.infraction_type}`}
+                className="w-100"
+                color="primary"
+                tag={Link}
+                to={`/training/${params.deviceId}/${trainingModel.infraction_type}/train`}
+                disabled={!device.stream_url}
+              >
+                Train
+              </Button>
+            )
+          }
         </td>
         <td className="text-end align-middle">
           <Button className="w-100" color="danger" onClick={() => deleteTrainingModel(trainingModel)}>
@@ -59,6 +70,23 @@ export default function ListTrainingInfractionsPage() {
           </Button>
         </td>
       </tr>
+  );
+
+  const trainedInfractionTypesTable = () => (
+    <Table striped borderless responsive>
+      <thead>
+        <tr>
+          <th>Infraction Type</th>
+          <th>Training State</th>
+          <th>Status</th>
+          <th />
+          <th />
+        </tr>
+      </thead>
+      <tbody className="border-top border-bottom">
+        {trainingModels.map(mapInfractionToTableRow)}
+      </tbody>
+    </Table>
   );
 
   // Used to wait for the fetches to load before rendering
@@ -69,28 +97,24 @@ export default function ListTrainingInfractionsPage() {
   return (
     <div>
       <BackButton to={`/location-manager/${device.location}/edit`} />
+      <Alert color="danger">
+        This device isn't streaming. Start this device's stream to train it to detect infractions.
+      </Alert>
       <div className="d-flex justify-content-between align-items-center pb-4">
         <h1 className="fw-bold">{`Training For Device #${params.deviceId}`}</h1>
-        <Button tag={Link} to={`/training/${params.deviceId}/add`} color="primary" >
+        <Button
+          id="addTrainingInfraction"
+          tag={Link}
+          to={`/training/${params.deviceId}/add`}
+          color="primary"
+          disabled={!device.stream_url}
+        >
             Assign Infraction Type
         </Button>
       </div>
       {
-        true ? (
-          <Table striped borderless responsive>
-            <thead>
-              <tr>
-                <th>Infraction Type</th>
-                <th>Training State</th>
-                <th>Status</th>
-                <th />
-                <th />
-              </tr>
-            </thead>
-            <tbody className="border-top border-bottom">
-              {trainingModels === null ? 'No Infraction Types': trainingModels.map(mapInfractionToTableRow)}
-            </tbody>
-          </Table>
+        trainingModels ? (
+          trainingModels.length ? trainedInfractionTypesTable() : <p>No infraction types to show</p>
         ) : (
           <Spinner />
         )
