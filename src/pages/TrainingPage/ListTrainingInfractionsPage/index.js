@@ -97,9 +97,13 @@ export default function ListTrainingInfractionsPage() {
   return (
     <div>
       <BackButton to={`/location-manager/${device.location}/edit`} />
-      <Alert color="danger">
-        This device isn't streaming. Start this device's stream to train it to detect infractions.
-      </Alert>
+      {
+        !device.stream_url && (
+          <Alert color="danger">
+            This device isn't streaming. Start this device's stream to train it to detect infractions.
+          </Alert>
+        )
+      }
       <div className="d-flex justify-content-between align-items-center pb-4">
         <h1 className="fw-bold">{`Training For Device #${params.deviceId}`}</h1>
         <Button
