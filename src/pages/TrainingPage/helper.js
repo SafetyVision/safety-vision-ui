@@ -12,8 +12,8 @@ export const TrainingStates = {
 };
 
 export const removeAssignedInfractions= (trainingModels, infractions) => {
-    trainingModels.forEach(e => {
-        infractions = infractions.filter(c => {return c.id !== e.infraction_type});
+    trainingModels.forEach(model => {
+        infractions = infractions.filter(infraction => {return infraction.id !== model.infraction_type});
     });
     return infractions
 };
