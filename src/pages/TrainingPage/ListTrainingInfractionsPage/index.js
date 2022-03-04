@@ -52,7 +52,7 @@ export default function ListTrainingInfractionsPage() {
           </Button>
         </td>
         <td className="text-end align-middle">
-          <Button className="w-100" color="danger" tag={Link} onClick={() => deleteTrainingModel(trainingModel)}>
+          <Button className="w-100" color="danger" onClick={() => deleteTrainingModel(trainingModel)}>
             Train
           </Button>
         </td>
