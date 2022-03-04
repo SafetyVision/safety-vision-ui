@@ -33,7 +33,11 @@ export default function LoginPage({
       });
   }
 
-  if (authInfo.isAuthenticated) {
+  const handlePasswordKeyPress = (event) => {
+    if (event.key === 'Enter') login();
+  }
+
+  if (authInfo.currentUser) {
     return <Navigate to="/" />;
   }
 
@@ -75,6 +79,7 @@ export default function LoginPage({
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            onKeyPress={handlePasswordKeyPress}
           />
         </FormGroup>
         <Button color="primary" onClick={login} className="w-100">

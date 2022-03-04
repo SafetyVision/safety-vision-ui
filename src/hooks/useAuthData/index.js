@@ -8,7 +8,7 @@ export default function useAuthData(setIsLoaded) {
   const isExistingUser = getCookie('sessionid') !== null;
 
   useEffect(() => {
-    axios.get('api/set-csrf/');
+    axios.get('/api/set-csrf/');
     axios.get('/api/test-auth/').then(() => {
       setIsAuthenticated(true);
       setIsLoaded(true);
@@ -16,7 +16,7 @@ export default function useAuthData(setIsLoaded) {
       setIsAuthenticated(false);
       setIsLoaded(true);
     });
-  });
+  }, [setIsLoaded]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -24,6 +24,8 @@ export default function useAuthData(setIsLoaded) {
         const user = res?.data || null;
         setCurrentUser(user);
       });
+    } else {
+      setCurrentUser(null);
     }
   }, [isAuthenticated]);
 

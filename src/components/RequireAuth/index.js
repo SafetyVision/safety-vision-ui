@@ -8,11 +8,11 @@ export default function RequireAuth({authInfo, children}) {
     return <Navigate to={from} state={{ from: null }} replace />
   }
 
-  if (!authInfo.isAuthenticated && authInfo.isExistingUser) {
+  if (!authInfo.currentUser && authInfo.isExistingUser) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  if (!authInfo.isAuthenticated) {
+  if (!authInfo.currentUser) {
     return <Navigate to="/" />;
   }
 

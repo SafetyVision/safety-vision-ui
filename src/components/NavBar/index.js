@@ -46,7 +46,7 @@ export default function NavBar({
       <Collapse isOpen={isOpen} navbar>
         <Nav navbar className="me-auto">
           {
-            !authInfo.isAuthenticated ? (
+            !authInfo.currentUser ? (
               <Fragment>
                 <NavItem>
                   <NavLink tag={Link} to="/login">
@@ -71,6 +71,16 @@ export default function NavBar({
                     Infraction Events
                   </NavLink>
                 </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} to="/infraction-types">
+                    Infraction Types
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} to="/location-manager">
+                    Location Manager
+                  </NavLink>
+                </NavItem>
                 <UncontrolledDropdown inNavbar nav>
                   <DropdownToggle caret nav>
                     User and Account Management
@@ -84,17 +94,12 @@ export default function NavBar({
                     </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
-                <NavItem>
-                  <NavLink tag={Link} to="/device-manager">
-                    Device Manager
-                  </NavLink>
-                </NavItem>
               </Fragment>
             )
           }
         </Nav>
         {
-          authInfo.isAuthenticated && (
+          authInfo.currentUser && (
             <Button onClick={logout}>
               Logout
             </Button>
