@@ -12,9 +12,11 @@ export default function ListTrainingInfractionsPage() {
   const params = useParams();
 
   useEffect(() => {
-    axios.get(`/api/devices/${params.deviceId}`).then((res) => {
-      setDevice(res.data);
-    });
+    if (!device) {
+      axios.get(`/api/devices/${params.deviceId}`).then((res) => {
+        setDevice(res.data);
+      });
+    }
     if (trainingModels === null) {
       axios.get(`/api/devices/${params.deviceId}/infraction_types/`).then((res) => {
         setTrainingModels(res.data);
@@ -25,7 +27,7 @@ export default function ListTrainingInfractionsPage() {
         setInfractionTypes(res.data);
       });
     }
-  }, [trainingModels, infractionTypes, params.deviceId]);
+  }, [trainingModels, infractionTypes, params.deviceId, device]);
 
   const deleteTrainingModel = (trainingModel) => {
     axios.delete(
@@ -60,7 +62,7 @@ export default function ListTrainingInfractionsPage() {
   );
 
   // Used to wait for the fetches to load before rendering
-  if (trainingModels === null || infractionTypes === null) {
+  if (trainingModels === null || infractionTypes === null || !device) {
     return <Spinner />;
   }
 
