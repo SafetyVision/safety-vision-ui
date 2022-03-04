@@ -15,6 +15,9 @@ import ListInfractionEventsPage from 'pages/InfractionEvents/ListInfractionEvent
 import ViewInfractionEvent from 'pages/InfractionEvents/ViewInfractionEventPage';
 import ListInfractionTypesPage from 'pages/InfractionTypesPage/ListInfractionTypesPage';
 import CreateInfractionTypePage from 'pages/InfractionTypesPage/CreateInfractionTypePage';
+import AddTrainingInfractionPage from 'pages/TrainingPage/AddTrainingInfractionPage';
+import ListTrainingInfractionsPage from 'pages/TrainingPage/ListTrainingInfractionsPage';
+import TrainInfractionPage from 'pages/TrainingPage/TrainInfractionPage';
 import RouteNotFoundPage from 'pages/ErrorPages/RouteNotFoundPage';
 import RequireAuth from 'components/RequireAuth';
 import { Routes, Route, Outlet } from 'react-router-dom';
@@ -94,6 +97,15 @@ export default function App() {
           <Route path="infraction-events" element={<RequireAuth authInfo={authInfo}><Outlet /></RequireAuth>}>
             <Route index element={<ListInfractionEventsPage />} />
             <Route path=":infractionEventId/view" element={<ViewInfractionEvent />} />
+          </Route>
+          <Route path="training" element={<RequireAuth authInfo={authInfo}><Outlet /></RequireAuth>}>
+            <Route path=":deviceId">
+              <Route path="add" index element={<AddTrainingInfractionPage />}/>
+              <Route path="view" index element={<ListTrainingInfractionsPage />} />
+              <Route path=":infractionId">
+                <Route path="train" index element={<TrainInfractionPage />} />
+              </Route>
+            </Route>
           </Route>
           <Route
             path="*"
