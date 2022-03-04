@@ -47,7 +47,7 @@ export default function ListUsersPage({ authInfo }) {
         <h1 className="fw-bold">User Management</h1>
         {
           authInfo.currentUser.isOwner && (
-            <Button tag={Link} to="/account/users/add" color="primary" className="h" >
+            <Button tag={Link} to="/account/users/add" color="primary" >
               Add User
             </Button>
           )

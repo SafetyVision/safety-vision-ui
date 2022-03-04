@@ -58,11 +58,15 @@ export default function ViewInfractionEvent() {
             <Link to={`/infraction-types/${infractionEvent.location.id}/view`} className="d-block text-decoration-none mb-5">
               {infractionEvent.location.description}
             </Link>
-            <div className="w-100 d-flex justify-content-center">
-              <video controls key={infractionEvent.id} className="w-100" style={{ maxWidth: '1000px' }}>
-                <source src={infractionEvent.infraction_video.file} type="video/mp4" />
-              </video>
-            </div>
+            {
+              infractionEvent.infraction_video.file && (
+                <div className="w-100 d-flex justify-content-center">
+                  <video controls key={infractionEvent.id} className="w-100" style={{ maxWidth: '1000px' }}>
+                    <source src={infractionEvent.infraction_video.file} type="video/mp4" />
+                  </video>
+                </div>
+              )
+            }
           </Fragment>
         ) : (
           <p>Something went wrong.</p>
