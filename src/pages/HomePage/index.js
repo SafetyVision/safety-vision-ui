@@ -23,7 +23,7 @@ export default function HomePage() {
       </Row>
       <Row>
         <Col>
-          <Button tag={Link} to="/login">
+          <Button tag={Link} to="/login" className="mt-2">
             Log In
           </Button>
         </Col>
