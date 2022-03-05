@@ -45,7 +45,6 @@ export default function DashboardPage() {
   }
 
   const populateDataArray = (infractionEvents) => {
-    console.log(infractionEvents);
     let dateArr = create24HourArray();
     let data = [];
 
