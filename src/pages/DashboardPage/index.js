@@ -64,7 +64,6 @@ export default function DashboardPage() {
         count: tempData,
       })
     }
-    console.log(data);
     setDataArray(data);
   }
 
