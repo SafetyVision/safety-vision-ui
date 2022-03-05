@@ -19,7 +19,6 @@ export default function DashboardPage() {
   useEffect(() => {
     setIsLoaded(false);
     axios.get('/api/infraction_events/').then((res) => {
-      setInfractionEvents(res.data);
       setIsLoaded(true);
       setIsError(false);
       populateDataArray(res.data);
