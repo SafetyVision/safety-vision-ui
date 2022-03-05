@@ -40,7 +40,6 @@ export default function DashboardPage() {
       arr.push(new Date(dt));
       dt.setHours(dt.getHours() + 1);
     }
-    console.log(arr);
 
     return arr;
   }
