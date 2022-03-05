@@ -46,22 +46,20 @@ export default function DashboardPage() {
     let dateArr = create24HourArray();
     let data = [];
 
-    for (let date of dateArr) {
-      let tempData = infractionEvents.filter((infractionEvent) => {
+    dateArr.forEach(date => {
+      const tempData = infractionEvents.filter((infractionEvent) => {
         let newDate = new Date(infractionEvent.infraction_date_time);
         return (date.getYear() === newDate.getYear() &&
           date.getMonth() === newDate.getMonth() &&
           date.getDate() === newDate.getDate() &&
-          date.getHours() === newDate.getHours())
-      })
-        .reduce((acc, val) => {
-          return acc + 1
-        }, 0)
+          date.getHours() === newDate.getHours());
+      }).reduce((acc) => acc + 1, 0);
+
       data.push({
         date: date.toString(),
         count: tempData,
       })
-    }
+    });
     setDataArray(data);
   }
 
