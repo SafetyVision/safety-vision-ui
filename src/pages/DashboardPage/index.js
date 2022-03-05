@@ -12,7 +12,6 @@ import {
 } from "recharts";
 
 export default function DashboardPage() {
-  const [infractionEvents, setInfractionEvents] = useState(null)
   const [isLoaded, setIsLoaded] = useState(false);
   const [isError, setIsError] = useState(false);
   const [dataArray, setDataArray] = useState({});
