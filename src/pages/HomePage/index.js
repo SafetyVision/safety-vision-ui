@@ -21,6 +21,13 @@ export default function HomePage() {
           </Button>
         </Col>
       </Row>
+      <Row>
+        <Col>
+          <Button tag={Link} to="/login">
+            Log In
+          </Button>
+        </Col>
+      </Row>
     </Container>
   );
 }
