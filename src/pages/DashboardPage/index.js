@@ -81,7 +81,7 @@ export default function DashboardPage() {
   return (
     <div>
       <h1 className="fw-bold">
-        Infraction Events
+        Dashboard Page
       </h1>
       <LineChart
         width={750}
