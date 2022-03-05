@@ -12,7 +12,6 @@ import {
 } from "recharts";
 
 export default function DashboardPage() {
-  const [infractionEvents, setInfractionEvents] = useState(null)
   const [isLoaded, setIsLoaded] = useState(false);
   const [isError, setIsError] = useState(false);
   const [dataArray, setDataArray] = useState({});
@@ -20,7 +19,6 @@ export default function DashboardPage() {
   useEffect(() => {
     setIsLoaded(false);
     axios.get('/api/infraction_events/').then((res) => {
-      setInfractionEvents(res.data);
       setIsLoaded(true);
       setIsError(false);
       populateDataArray(res.data);
@@ -40,33 +38,28 @@ export default function DashboardPage() {
       arr.push(new Date(dt));
       dt.setHours(dt.getHours() + 1);
     }
-    console.log(arr);
 
     return arr;
   }
 
   const populateDataArray = (infractionEvents) => {
-    console.log(infractionEvents);
     let dateArr = create24HourArray();
     let data = [];
 
-    for (let date of dateArr) {
-      let tempData = infractionEvents.filter((infractionEvent) => {
+    dateArr.forEach(date => {
+      const tempData = infractionEvents.filter((infractionEvent) => {
         let newDate = new Date(infractionEvent.infraction_date_time);
         return (date.getYear() === newDate.getYear() &&
           date.getMonth() === newDate.getMonth() &&
           date.getDate() === newDate.getDate() &&
-          date.getHours() === newDate.getHours())
-      })
-        .reduce((acc, val) => {
-          return acc + 1
-        }, 0)
+          date.getHours() === newDate.getHours());
+      }).reduce((acc) => acc + 1, 0);
+
       data.push({
         date: date.toString(),
         count: tempData,
       })
-    }
-    console.log(data);
+    });
     setDataArray(data);
   }
 
