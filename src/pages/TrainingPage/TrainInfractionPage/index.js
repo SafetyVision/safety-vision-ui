@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Spinner, Button, Alert } from 'reactstrap';
 import BackButton from 'components/BackButton';
 import LiveFeed from 'components/LiveFeed';
-import { TrainingStates, TrainingStatesVerbose } from '../helper';
+import { TrainingStatesVerbose, WaitingTrainingStates } from '../helper';
 
 export default function TrainInfractionsPage() {
   const [trainingModel, setTrainingModel] = useState(null);
@@ -16,21 +16,15 @@ export default function TrainInfractionsPage() {
   const navigate = useNavigate();
   const sseConnection = useRef(null);
 
-  const refreshTrainingModel = () => {
-    axios.get(`/api/devices/${params.deviceId}/infraction_types/${params.infractionId}`).then((res) => {
-      setTrainingModel(res.data);
-      if (res.data.training_state === "done_not_committing_2" || res.data.training_state === "trained") {
-        setIsComplete(true);
-      }
-    });
-  };
-
   useEffect(() => {
     if (trainingModel === null) {
       axios.get(`/api/devices/${params.deviceId}/infraction_types/${params.infractionId}`).then((res) => {
         setTrainingModel(res.data);
         if (res.data.training_state === "done_not_committing_2" || res.data.training_state === "trained") {
           setIsComplete(true);
+        }
+        if (WaitingTrainingStates.includes(res.data.training_state)) {
+          setIsWaiting(true);
         }
       });
     }
@@ -55,7 +49,12 @@ export default function TrainInfractionsPage() {
       const sseConnectionEndpoint =`/api/events/?channel=${params.deviceId}_${params.infractionId}_training_events`;
       sseConnection.current = new EventSource(sseConnectionEndpoint);
       sseConnection.current.onmessage = () => {
-        refreshTrainingModel(null);
+        axios.get(`/api/devices/${params.deviceId}/infraction_types/${params.infractionId}`).then((res) => {
+          setTrainingModel(res.data);
+          if (res.data.training_state === "done_not_committing_2" || res.data.training_state === "trained") {
+            setIsComplete(true);
+          }
+        });
         setIsWaiting(false);
       }
     }
@@ -63,7 +62,7 @@ export default function TrainInfractionsPage() {
       sseConnection.current.close();
       sseConnection.current = null;
     }
-  });
+  }, [params.deviceId, params.infractionId]);
 
   const startTraining = () => {
     let nextState = "";
@@ -72,9 +71,16 @@ export default function TrainInfractionsPage() {
     } else if (trainingModel.training_state === "done_committing_1" || trainingModel.training_state === "done_committing_2") {
       nextState = "start_not_commit";
     }
-    axios.post(`/api/devices/${params.deviceId}/infraction_types/${params.infractionId}/${nextState}`, {
-    }).then(() => {
-      refreshTrainingModel();
+    axios.post(
+      `/api/devices/${params.deviceId}/infraction_types/${params.infractionId}/${nextState}`,
+      {}
+    ).then(() => {
+      axios.get(`/api/devices/${params.deviceId}/infraction_types/${params.infractionId}`).then((res) => {
+        setTrainingModel(res.data);
+        if (res.data.training_state === "done_not_committing_2" || res.data.training_state === "trained") {
+          setIsComplete(true);
+        }
+      });
       setIsWaiting(true);
     })
   }

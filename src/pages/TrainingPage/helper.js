@@ -25,12 +25,14 @@ export const TrainingStatesVerbose = {
     'not_committing_2': 'Training State: Not Committing Infraction (Round 2)',
     'done_not_committing_2': `Training State: Completed Not Commiting Infraction (Round 2) - You are finished
         providing training data. Check back here when we have finished training your device.`,
-    'trained': 'Trained',
+    'trained': 'Training State: Trained - Your device is now detecting for infractions being committed.',
 };
 
 export const removeAssignedInfractions= (trainingModels, infractions) => {
     trainingModels.forEach(model => {
-        infractions = infractions.filter(infraction => {return infraction.id !== model.infraction_type});
+        infractions = infractions.filter(infraction => infraction.id !== model.infraction_type);
     });
     return infractions
 };
+
+export const WaitingTrainingStates = ['committing_1', 'not_committing_1', 'committing_2', 'not_committing_2'];
