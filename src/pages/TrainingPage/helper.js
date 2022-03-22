@@ -35,4 +35,10 @@ export const removeAssignedInfractions= (trainingModels, infractions) => {
     return infractions
 };
 
-export const WaitingTrainingStates = ['committing_1', 'not_committing_1', 'committing_2', 'not_committing_2'];
+export const WaitingTrainingStates = [
+    'committing_1',
+    'not_committing_1',
+    'committing_2',
+    'not_committing_2',
+    'done_not_committing_2'
+];
