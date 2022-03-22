@@ -1,16 +1,16 @@
-import ReactHlsPlayer from 'react-hls-player';
+import ReactPlayer from 'react-player';
 
 export default function LiveFeed({ url }) {
     if (url){
         return (
             <div>
-                <ReactHlsPlayer
-                    src={url}
-                    autoPlay={true}
+                <ReactPlayer
+                    url={url}
+                    playing={true}
                     controls={true}
+                    muted={true}
                     width="100%"
                     height="auto"
-                    className="player"
                 />
             </div>
         );
