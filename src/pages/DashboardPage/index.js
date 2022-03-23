@@ -47,7 +47,6 @@ export default function DashboardPage() {
     } else if (infractionEvents !== null && graphType === "byType") {
       setDataArray(byTypeGraph(timeSpan, infractionEvents));
     }
-    console.log(infractionEvents);
   }, [timeSpan, infractionEvents, graphType]);
 
   if (isError) {
