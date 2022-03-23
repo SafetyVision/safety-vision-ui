@@ -1,4 +1,4 @@
-export default function formatTimestamp(timestamp) {
+export default function formatTimestamp(timestamp, type) {
   const date = new Date(timestamp)
 
   const months = [
@@ -15,6 +15,11 @@ export default function formatTimestamp(timestamp) {
   if (formattedHours === 0) {
     formattedHours = 12
   }
+  
+  if (type === "today") return `${formattedHours}:${minutes < 10 ? 0 : ''}${minutes}${amPm}`;
+  if (type === "week" || type === "month") return `${month} ${day}`;
+  if (type === "year") return `${month}`;
+  if (type === "all") return `${year}`;
 
   return `${month} ${day}, ${year} ${formattedHours}:${minutes < 10 ? 0 : ''}${minutes}${amPm}`
 }
