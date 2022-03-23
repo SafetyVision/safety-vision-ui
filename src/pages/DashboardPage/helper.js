@@ -1,288 +1,5 @@
 import formatTimestamp from "util/dates";
 
-export const overTimeGraph = (timeSpan, infractionEvents) => {
-  let dateArr = [];
-  let data = [];
-  if (timeSpan === "today") {
-    dateArr = create24HourArray();
-    dateArr.forEach((date) => {
-      const tempData = infractionEvents
-        .filter((infractionEvent) => {
-          let newDate = new Date(
-            infractionEvent.infraction_date_time.replace("Z", "")
-          );
-          return (
-            date.getYear() === newDate.getYear() &&
-            date.getMonth() === newDate.getMonth() &&
-            date.getDate() === newDate.getDate() &&
-            date.getHours() === newDate.getHours()
-          );
-        })
-        .reduce((acc) => acc + 1, 0);
-      data.push({
-        date: formatTimestamp(date, timeSpan),
-        'Number of Infractions': tempData,
-      });
-    });
-  } else if (timeSpan === "week") {
-    dateArr = createWeekArray();
-    dateArr.forEach((date) => {
-      const tempData = infractionEvents
-        .filter((infractionEvent) => {
-          let newDate = new Date(
-            infractionEvent.infraction_date_time.replace("Z", "")
-          );
-          return (
-            date.getYear() === newDate.getYear() &&
-            date.getMonth() === newDate.getMonth() &&
-            date.getDate() === newDate.getDate()
-          );
-        })
-        .reduce((acc) => acc + 1, 0);
-      data.push({
-        date: formatTimestamp(date, timeSpan),
-        'Number of Infractions': tempData,
-      });
-    });
-  } else if (timeSpan === "month") {
-    dateArr = createMonthArray();
-    dateArr.forEach((date) => {
-      const tempData = infractionEvents
-        .filter((infractionEvent) => {
-          let newDate = new Date(
-            infractionEvent.infraction_date_time.replace("Z", "")
-          );
-          return (
-            date.getYear() === newDate.getYear() &&
-            date.getMonth() === newDate.getMonth() &&
-            date.getDate() === newDate.getDate()
-          );
-        })
-        .reduce((acc) => acc + 1, 0);
-      data.push({
-        date: formatTimestamp(date, timeSpan),
-        'Number of Infractions': tempData,
-      });
-    });
-  } else if (timeSpan === "year") {
-    dateArr = createYearArray();
-    dateArr.forEach((date) => {
-      const tempData = infractionEvents
-        .filter((infractionEvent) => {
-          let newDate = new Date(
-            infractionEvent.infraction_date_time.replace("Z", "")
-          );
-          return (
-            date.getYear() === newDate.getYear() &&
-            date.getMonth() === newDate.getMonth()
-          );
-        })
-        .reduce((acc) => acc + 1, 0);
-      data.push({
-        date: formatTimestamp(date, timeSpan),
-        'Number of Infractions': tempData,
-      });
-    });
-  }
-  return data;
-};
-
-export const byLocationGraph = (timeSpan, infractionEvents) => {
-  const locationArr = [
-    ...new Set(
-      infractionEvents.map(
-        (infractionEvent) => infractionEvent.location.description
-      )
-    ),
-  ];
-  let data = [];
-  const today = new Date();
-
-  if (timeSpan === "today") {
-    locationArr.forEach((location) => {
-      const tempData = infractionEvents
-        .filter((infractionEvent) => {
-          let newDate = new Date(
-            infractionEvent.infraction_date_time.replace("Z", "")
-          );
-          return (
-            today.getYear() === newDate.getYear() &&
-            today.getMonth() === newDate.getMonth() &&
-            today.getDate() === newDate.getDate() &&
-            location === infractionEvent.location.description
-          );
-        })
-        .reduce((acc) => acc + 1, 0);
-      data.push({
-        location: location,
-        'Number of Infractions': tempData,
-      });
-    });
-  } else if (timeSpan === "week") {
-    let pastDate = new Date();
-    pastDate.setDate(today.getDate() - 7);
-    locationArr.forEach((location) => {
-      const tempData = infractionEvents
-        .filter((infractionEvent) => {
-          let newDate = new Date(
-            infractionEvent.infraction_date_time.replace("Z", "")
-          );
-          return (
-            newDate >= pastDate &&
-            newDate <= today &&
-            location === infractionEvent.location.description
-          );
-        })
-        .reduce((acc) => acc + 1, 0);
-      data.push({
-        location: location,
-        'Number of Infractions': tempData,
-      });
-    });
-  } else if (timeSpan === "month") {
-    let pastDate = new Date();
-    pastDate.setDate(today.getDate() - 30);
-    locationArr.forEach((location) => {
-      const tempData = infractionEvents
-        .filter((infractionEvent) => {
-          let newDate = new Date(
-            infractionEvent.infraction_date_time.replace("Z", "")
-          );
-          return (
-            newDate >= pastDate &&
-            newDate <= today &&
-            location === infractionEvent.location.description
-          );
-        })
-        .reduce((acc) => acc + 1, 0);
-      data.push({
-        location: location,
-        'Number of Infractions': tempData,
-      });
-    });
-  } else if (timeSpan === "year") {
-    let pastDate = new Date();
-    pastDate.setDate(today.getDate() - 365);
-    locationArr.forEach((location) => {
-      const tempData = infractionEvents
-        .filter((infractionEvent) => {
-          let newDate = new Date(
-            infractionEvent.infraction_date_time.replace("Z", "")
-          );
-          return (
-            newDate >= pastDate &&
-            newDate <= today &&
-            location === infractionEvent.location.description
-          );
-        })
-        .reduce((acc) => acc + 1, 0);
-      data.push({
-        location: location,
-        'Number of Infractions': tempData,
-      });
-    });
-  }
-  return data;
-};
-
-export const byTypeGraph = (timeSpan, infractionEvents) => {
-  const typeArr = [
-    ...new Set(
-      infractionEvents.map(
-        (infractionEvent) => infractionEvent.infraction_type.infraction_type_name
-      )
-    ),
-  ];
-  let data = [];
-  const today = new Date();
-
-  if (timeSpan === "today") {
-    typeArr.forEach((type) => {
-      const tempData = infractionEvents
-        .filter((infractionEvent) => {
-          let newDate = new Date(
-            infractionEvent.infraction_date_time.replace("Z", "")
-          );
-          return (
-            today.getYear() === newDate.getYear() &&
-            today.getMonth() === newDate.getMonth() &&
-            today.getDate() === newDate.getDate() &&
-            type === infractionEvent.infraction_type.infraction_type_name
-          );
-        })
-        .reduce((acc) => acc + 1, 0);
-      data.push({
-        type: type,
-        'Number of Infractions': tempData,
-      });
-    });
-  } else if (timeSpan === "week") {
-    let pastDate = new Date();
-    pastDate.setDate(today.getDate() - 7);
-    typeArr.forEach((type) => {
-      const tempData = infractionEvents
-        .filter((infractionEvent) => {
-          let newDate = new Date(
-            infractionEvent.infraction_date_time.replace("Z", "")
-          );
-          return (
-            newDate >= pastDate &&
-            newDate <= today &&
-            type === infractionEvent.infraction_type.infraction_type_name
-          );
-        })
-        .reduce((acc) => acc + 1, 0);
-      data.push({
-        type: type,
-        'Number of Infractions': tempData,
-      });
-    });
-  } else if (timeSpan === "month") {
-    let pastDate = new Date();
-    pastDate.setDate(today.getDate() - 30);
-    typeArr.forEach((type) => {
-      const tempData = infractionEvents
-        .filter((infractionEvent) => {
-          let newDate = new Date(
-            infractionEvent.infraction_date_time.replace("Z", "")
-          );
-          return (
-            newDate >= pastDate &&
-            newDate <= today &&
-            type === infractionEvent.infraction_type.infraction_type_name
-          );
-        })
-        .reduce((acc) => acc + 1, 0);
-      data.push({
-        type: type,
-        'Number of Infractions': tempData,
-      });
-    });
-  } else if (timeSpan === "year") {
-    let pastDate = new Date();
-    pastDate.setDate(today.getDate() - 365);
-    typeArr.forEach((type) => {
-      const tempData = infractionEvents
-        .filter((infractionEvent) => {
-          let newDate = new Date(
-            infractionEvent.infraction_date_time.replace("Z", "")
-          );
-          return (
-            newDate >= pastDate &&
-            newDate <= today &&
-            type === infractionEvent.infraction_type.infraction_type_name
-          );
-        })
-        .reduce((acc) => acc + 1, 0);
-      data.push({
-        type: type,
-        'Number of Infractions': tempData,
-      });
-    });
-  }
-  return data;
-};
-
 const create24HourArray = () => {
   let dates = [];
 
@@ -328,4 +45,127 @@ const createYearArray = () => {
     dates.push(tempDate);
   }
   return dates;
+};
+
+const mapTimeSpanToTimeFilterFunction = {
+  "today": (date, newDate) => (
+    date.getYear() === newDate.getYear() &&
+    date.getMonth() === newDate.getMonth() &&
+    date.getDate() === newDate.getDate() &&
+    date.getHours() === newDate.getHours()
+  ),
+  "week": (date, newDate) => (
+    date.getYear() === newDate.getYear() &&
+    date.getMonth() === newDate.getMonth() &&
+    date.getDate() === newDate.getDate()
+  ),
+  "month": (date, newDate) => (
+    date.getYear() === newDate.getYear() &&
+    date.getMonth() === newDate.getMonth() &&
+    date.getDate() === newDate.getDate()
+  ),
+  "year": (date, newDate) => (
+    date.getYear() === newDate.getYear() &&
+    date.getMonth() === newDate.getMonth()
+  ),
+};
+
+const mapTimeSpanToCreateArrayFunction = {
+  "today": create24HourArray,
+  "week": createWeekArray,
+  "month": createMonthArray,
+  "year": createYearArray,
+};
+
+const mapTimeSpanToDaysInt = {
+  "today": 1,
+  "week": 7,
+  "month": 30,
+  "year": 365,
+};
+
+export const overTimeGraph = (timeSpan, infractionEvents) => {
+  let dateArr = mapTimeSpanToCreateArrayFunction[timeSpan]();;
+  let data = [];
+
+  dateArr.forEach((date) => {
+    const tempData = infractionEvents
+      .filter((infractionEvent) => {
+        let newDate = new Date(infractionEvent.infraction_date_time);
+        return (mapTimeSpanToTimeFilterFunction[timeSpan](date, newDate));
+      })
+      .reduce((acc) => acc + 1, 0);
+    data.push({
+      date: formatTimestamp(date, timeSpan),
+      'Number of Infractions': tempData,
+    });
+  });
+
+  return data;
+};
+
+export const byLocationGraph = (timeSpan, infractionEvents) => {
+  const locationArr = [
+    ...new Set(
+      infractionEvents.map(
+        (infractionEvent) => infractionEvent.location.description
+      )
+    ),
+  ];
+  let data = [];
+  const today = new Date();
+  let pastDate = new Date();
+  pastDate.setDate(today.getDate() - mapTimeSpanToDaysInt[timeSpan]);
+
+  locationArr.forEach((location) => {
+    const tempData = infractionEvents
+      .filter((infractionEvent) => {
+        let newDate = new Date(infractionEvent.infraction_date_time);
+        return (
+          newDate >= pastDate &&
+          newDate <= today &&
+          location === infractionEvent.location.description
+        );
+      })
+      .reduce((acc) => acc + 1, 0);
+    data.push({
+      location: location,
+      'Number of Infractions': tempData,
+    });
+  });
+
+  return data;
+};
+
+export const byTypeGraph = (timeSpan, infractionEvents) => {
+  const typeArr = [
+    ...new Set(
+      infractionEvents.map(
+        (infractionEvent) => infractionEvent.infraction_type.infraction_type_name
+      )
+    ),
+  ];
+  let data = [];
+  const today = new Date();
+  let pastDate = new Date();
+  pastDate.setDate(today.getDate() - mapTimeSpanToDaysInt[timeSpan]);
+
+  typeArr.forEach((type) => {
+    const tempData = infractionEvents
+      .filter((infractionEvent) => {
+        let newDate = new Date(infractionEvent.infraction_date_time);
+        return (
+          newDate >= pastDate &&
+          newDate <= today &&
+          type === infractionEvent.infraction_type.infraction_type_name
+        );
+      })
+      .reduce((acc) => acc + 1, 0);
+    data.push({
+      type: type,
+      'Number of Infractions': tempData,
+    });
+  });
+
+  return data;
 };
