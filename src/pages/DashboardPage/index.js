@@ -47,6 +47,7 @@ export default function DashboardPage() {
     } else if (infractionEvents !== null && graphType === "byType") {
       setDataArray(byTypeGraph(timeSpan, infractionEvents));
     }
+    console.log(infractionEvents);
   }, [timeSpan, infractionEvents, graphType]);
 
   if (isError) {
@@ -119,7 +120,7 @@ export default function DashboardPage() {
           </Input>
         </FormGroup>
       </div>
-      <div style={{ width: "100%", height: 600 }}>
+      <div style={{ width: "100%", height: 800 }}>
         <ResponsiveContainer width="100%">
           {(graphType === "overTime" && (
             <LineChart
