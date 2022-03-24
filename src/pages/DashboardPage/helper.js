@@ -48,56 +48,52 @@ const createYearArray = () => {
 };
 
 const mapTimeSpanToTimeFilterFunction = {
-  "today": (date, newDate) => (
+  today: (date, newDate) =>
     date.getYear() === newDate.getYear() &&
     date.getMonth() === newDate.getMonth() &&
     date.getDate() === newDate.getDate() &&
-    date.getHours() === newDate.getHours()
-  ),
-  "week": (date, newDate) => (
+    date.getHours() === newDate.getHours(),
+  week: (date, newDate) =>
     date.getYear() === newDate.getYear() &&
     date.getMonth() === newDate.getMonth() &&
-    date.getDate() === newDate.getDate()
-  ),
-  "month": (date, newDate) => (
+    date.getDate() === newDate.getDate(),
+  month: (date, newDate) =>
     date.getYear() === newDate.getYear() &&
     date.getMonth() === newDate.getMonth() &&
-    date.getDate() === newDate.getDate()
-  ),
-  "year": (date, newDate) => (
+    date.getDate() === newDate.getDate(),
+  year: (date, newDate) =>
     date.getYear() === newDate.getYear() &&
-    date.getMonth() === newDate.getMonth()
-  ),
+    date.getMonth() === newDate.getMonth(),
 };
 
 const mapTimeSpanToCreateArrayFunction = {
-  "today": create24HourArray,
-  "week": createWeekArray,
-  "month": createMonthArray,
-  "year": createYearArray,
+  today: create24HourArray,
+  week: createWeekArray,
+  month: createMonthArray,
+  year: createYearArray,
 };
 
 const mapTimeSpanToDaysInt = {
-  "today": 1,
-  "week": 7,
-  "month": 30,
-  "year": 365,
+  today: 1,
+  week: 7,
+  month: 30,
+  year: 365,
 };
 
 export const overTimeGraph = (timeSpan, infractionEvents) => {
-  let dateArr = mapTimeSpanToCreateArrayFunction[timeSpan]();;
+  let dateArr = mapTimeSpanToCreateArrayFunction[timeSpan]();
   let data = [];
 
   dateArr.forEach((date) => {
     const tempData = infractionEvents
       .filter((infractionEvent) => {
         let newDate = new Date(infractionEvent.infraction_date_time);
-        return (mapTimeSpanToTimeFilterFunction[timeSpan](date, newDate));
+        return mapTimeSpanToTimeFilterFunction[timeSpan](date, newDate);
       })
       .reduce((acc) => acc + 1, 0);
     data.push({
       date: formatTimestamp(date, timeSpan),
-      'Number of Infractions': tempData,
+      "Number of Infractions": tempData,
     });
   });
 
@@ -130,7 +126,7 @@ export const byLocationGraph = (timeSpan, infractionEvents) => {
       .reduce((acc) => acc + 1, 0);
     data.push({
       location: location,
-      'Number of Infractions': tempData,
+      "Number of Infractions": tempData,
     });
   });
 
@@ -141,7 +137,8 @@ export const byTypeGraph = (timeSpan, infractionEvents) => {
   const typeArr = [
     ...new Set(
       infractionEvents.map(
-        (infractionEvent) => infractionEvent.infraction_type.infraction_type_name
+        (infractionEvent) =>
+          infractionEvent.infraction_type.infraction_type_name
       )
     ),
   ];
@@ -163,9 +160,75 @@ export const byTypeGraph = (timeSpan, infractionEvents) => {
       .reduce((acc) => acc + 1, 0);
     data.push({
       type: type,
-      'Number of Infractions': tempData,
+      "Number of Infractions": tempData,
     });
   });
 
   return data;
+};
+
+export const movingAverageGraph = (timeSpan, infractionEvents) => {
+  let movingAverage = [];
+  const k = timeSpan === "year" ? 3 : 5;
+  const n = Math.floor(k / 2);
+
+  let dateArr = createMovingAverageTimeArray(timeSpan, n);
+  let data = [];
+
+  dateArr.forEach((date) => {
+    const tempData = infractionEvents
+      .filter((infractionEvent) => {
+        let newDate = new Date(infractionEvent.infraction_date_time);
+        return mapTimeSpanToTimeFilterFunction[timeSpan](date, newDate);
+      })
+      .reduce((acc) => acc + 1, 0);
+    data.push({
+      date: formatTimestamp(date, timeSpan),
+      "Number of Infractions": tempData,
+    });
+  });
+
+  data.forEach((point, index) => {
+    if (index >= n && index < data.length - n) {
+      movingAverage.push({
+        date: point.date,
+        "Moving Average": calculateMA(data, index, n, k),
+      });
+    }
+  });
+  return movingAverage;
+};
+
+const createMovingAverageTimeArray = (timeSpan, n) => {
+  let dates = [];
+  const today = new Date();
+
+  if (timeSpan === "month") {
+    for (let i = 30 + n; i >= 0; i--) {
+      let tempDate = new Date();
+      tempDate.setDate(today.getDate() - i);
+      dates.push(tempDate);
+    }
+  } else if (timeSpan === "year") {
+    for (let i = 12 + n; i >= 0; i--) {
+      let tempDate = new Date();
+      tempDate.setMonth(today.getMonth() - i);
+      dates.push(tempDate);
+    }
+  }
+
+  return dates;
+};
+
+const calculateMA = (data, i, n, k) => {
+  const arr = data
+    .map((d) => d["Number of Infractions"])
+    .slice(i - n, i + n + 1);
+  const testArray = data.slice(i - n, i + n + 1);
+  let movingAverage = 0;
+  movingAverage = arr.reduce((sum, n) => sum + n, 0);
+
+  movingAverage = movingAverage / k;
+
+  return movingAverage;
 };

@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "util/axiosConfig";
 import { Spinner, Button, FormGroup, Label, Input } from "reactstrap";
-import { overTimeGraph, byLocationGraph, byTypeGraph } from "./helper";
+import {
+  overTimeGraph,
+  byLocationGraph,
+  byTypeGraph,
+  movingAverageGraph,
+} from "./helper";
 import ResourceNotFoundPage from "pages/ErrorPages/ResourceNotFoundPage";
 import {
   LineChart,
@@ -46,6 +51,18 @@ export default function DashboardPage() {
       setDataArray(byLocationGraph(timeSpan, infractionEvents));
     } else if (infractionEvents !== null && graphType === "byType") {
       setDataArray(byTypeGraph(timeSpan, infractionEvents));
+    } else if (
+      infractionEvents !== null &&
+      graphType === "movingAverage" &&
+      (timeSpan === "today" || timeSpan === "week")
+    ) {
+      setTimeSpan("month");
+    } else if (
+      infractionEvents !== null &&
+      graphType === "movingAverage" &&
+      (timeSpan === "month" || timeSpan === "year")
+    ) {
+      setDataArray(movingAverageGraph(timeSpan, infractionEvents));
     }
   }, [timeSpan, infractionEvents, graphType]);
 
@@ -66,6 +83,7 @@ export default function DashboardPage() {
             className="rounded-0"
             color={timeSpan === "today" ? "primary" : "secondary"}
             onClick={() => setTimeSpan("today")}
+            disabled={graphType === "movingAverage"}
           >
             Today
           </Button>
@@ -73,6 +91,7 @@ export default function DashboardPage() {
             className="rounded-0"
             color={timeSpan === "week" ? "primary" : "secondary"}
             onClick={() => setTimeSpan("week")}
+            disabled={graphType === "movingAverage"}
           >
             Last Week
           </Button>
@@ -135,11 +154,16 @@ export default function DashboardPage() {
               <XAxis
                 dataKey="date"
                 height={1}
-                interval={timeSpan === "week" ? 0 : 3}
+                interval={timeSpan === "week" ? 0 : timeSpan === "year" ? 1 : 3}
               />
               <YAxis />
               <Tooltip />
-              <Line strokeWidth={1} type="monotone" dataKey="Number of Infractions" stroke="#82ca9d" />
+              <Line
+                strokeWidth={1}
+                type="monotone"
+                dataKey="Number of Infractions"
+                stroke="#82ca9d"
+              />
             </LineChart>
           )) ||
             (graphType === "byLocation" && (
@@ -156,7 +180,11 @@ export default function DashboardPage() {
                 <XAxis dataKey="location" height={1} interval={0} />
                 <YAxis />
                 <Tooltip />
-                <Bar dataKey="Number of Infractions" fill="#82ca9d" barSize={100} />
+                <Bar
+                  dataKey="Number of Infractions"
+                  fill="#82ca9d"
+                  barSize={100}
+                />
               </BarChart>
             )) ||
             (graphType === "byType" && (
@@ -173,8 +201,38 @@ export default function DashboardPage() {
                 <XAxis dataKey="type" height={1} interval={0} />
                 <YAxis />
                 <Tooltip />
-                <Bar dataKey="Number of Infractions" fill="#82ca9d" barSize={100} />
+                <Bar
+                  dataKey="Number of Infractions"
+                  fill="#82ca9d"
+                  barSize={100}
+                />
               </BarChart>
+            )) ||
+            (graphType === "movingAverage" && (
+              <LineChart
+                data={dataArray}
+                margin={{
+                  top: 5,
+                  right: 30,
+                  left: 20,
+                  bottom: 200,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis
+                  dataKey="date"
+                  height={1}
+                  interval={timeSpan === "month" ? 3 : 1}
+                />
+                <YAxis />
+                <Tooltip />
+                <Line
+                  strokeWidth={1}
+                  type="monotone"
+                  dataKey="Moving Average"
+                  stroke="#82ca9d"
+                />
+              </LineChart>
             ))}
         </ResponsiveContainer>
       </div>
