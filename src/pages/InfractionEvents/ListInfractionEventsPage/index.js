@@ -1,6 +1,6 @@
 import  { useState, useEffect } from 'react';
 import axios from 'util/axiosConfig';
-import { Table, Spinner, Button, Input, Label, FormGroup } from 'reactstrap';
+import { Table, Spinner, Button, Input, Label, FormGroup, Alert } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import formatTimestamp from 'util/dates';
 import ResourceNotFoundPage from 'pages/ErrorPages/ResourceNotFoundPage';
@@ -10,6 +10,11 @@ const FILTER_OPTIONS = {
     filterKey: 'location',
     displayName: 'Location',
     displayNameKey: 'description',
+  },
+  date: {
+    filterKey: 'infraction_date_time',
+    displayName: 'Date',
+    displayNameKey: null,
   },
   infractionType: {
     filterKey: 'infraction_type',
@@ -24,12 +29,18 @@ const FILTER_OPTIONS = {
 }
 
 export default function ListInfractionEventsPage() {
+  const today = new Date();
+  const formattedMonth = today.getMonth() < 9 ? `0${today.getMonth() + 1}` : today.getMonth() + 1;
+  const formattedDate = today.getDate() < 9 ? `0${today.getDate()}` : today.getDate();
+  const todayFormatted = `${today.getFullYear()}-${formattedMonth}-${formattedDate}`;
   const [infractionEvents, setInfractionEvents] = useState(null);
   const [allInfractionEvents, setAllInfractionEvents] = useState(null);
   const [isError, setIsError] = useState(false);
   const [filter, setFilter] = useState("noFilter");
   const [selectedFilterValue, setSelectedFilterValue] = useState("none");
   const [possibleFilterValues, setPossibleFilterValues] = useState({});
+  const [startDate, setStartDate] = useState(todayFormatted);
+  const [endDate, setEndDate] = useState(todayFormatted);
 
   useEffect(() => {
     axios.get('/api/infraction_events/').then((res) => {
@@ -57,13 +68,25 @@ export default function ListInfractionEventsPage() {
 
   useEffect(() => {
     const filterObject = FILTER_OPTIONS[filter];
-    if (!filterObject.filterKey || selectedFilterValue === "none") setInfractionEvents(allInfractionEvents);
-    else {
+    if (!filterObject.filterKey || (selectedFilterValue === "none" && filter !== "date")) {
+      setInfractionEvents(allInfractionEvents);
+    } else if (filter === "date") {
+      setInfractionEvents(
+        allInfractionEvents.filter((event) => {
+          const eventDate = new Date(event[filterObject.filterKey]);
+          const startDateArr = startDate.split("-").map(num => parseInt(num));
+          const endDateArr = endDate.split("-").map(num => parseInt(num));
+          const start = new Date(startDateArr[0], startDateArr[1] - 1, startDateArr[2]);
+          const end = new Date(endDateArr[0], endDateArr[1] - 1, endDateArr[2] + 1);
+          return eventDate >= start && eventDate < end;
+        })
+      );
+    } else {
       setInfractionEvents(
         allInfractionEvents.filter(event => `${event[filterObject.filterKey].id}` === selectedFilterValue)
       );
     }
-  }, [selectedFilterValue, filter, allInfractionEvents])
+  }, [selectedFilterValue, filter, allInfractionEvents, startDate, endDate])
 
   const mapInfractionEventToTableRow = (infractionEvent) => (
     <tr key={infractionEvent.id}>
@@ -94,6 +117,8 @@ export default function ListInfractionEventsPage() {
   const handleFilterChange = (e) => {
     setFilter(e.target.value);
     setSelectedFilterValue("none");
+    setStartDate(todayFormatted);
+    setEndDate(todayFormatted);
   }
 
   if (isError) {
@@ -131,10 +156,13 @@ export default function ListInfractionEventsPage() {
           <option value="infractionType">
             {FILTER_OPTIONS.infractionType.displayName}
           </option>
+          <option value="date">
+            {FILTER_OPTIONS.date.displayName}
+          </option>
         </Input>
       </FormGroup>
       {
-        FILTER_OPTIONS[filter].filterKey && (
+        filter !== "date" && FILTER_OPTIONS[filter].filterKey && (
           <FormGroup>
             <Label>{`Select ${FILTER_OPTIONS[filter].displayName}:`}</Label>
             <Input
@@ -158,6 +186,31 @@ export default function ListInfractionEventsPage() {
                 ))
               }
             </Input>
+          </FormGroup>
+        )
+      }
+      {
+        filter === "date" && (
+          <FormGroup>
+            <Label>Start Date</Label>
+            <Input
+              type="date"
+              value={startDate}
+              onChange={e => setStartDate(e.target.value)}
+            />
+            <Label>End Date</Label>
+            <Input
+              type="date"
+              value={endDate}
+              onChange={e => setEndDate(e.target.value)}
+            />
+            {
+              new Date(startDate) > new Date(endDate) && (
+                <Alert className="mt-2" color="danger">
+                  Invalid Date Range
+                </Alert>
+              )
+            }
           </FormGroup>
         )
       }
