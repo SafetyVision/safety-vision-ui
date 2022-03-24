@@ -40,7 +40,15 @@ export default function ListInfractionEventsPage() {
   const [selectedFilterValue, setSelectedFilterValue] = useState("none");
   const [possibleFilterValues, setPossibleFilterValues] = useState({});
   const [startDate, setStartDate] = useState(todayFormatted);
+  const [startDateTime, setStartDateTime] = useState("00:00");
   const [endDate, setEndDate] = useState(todayFormatted);
+  const [endDateTime, setEndDateTime] = useState("00:00");
+
+  const parseDate = (date, time) => {
+    const dateArr = date.split("-").map(num => parseInt(num));
+    const timeArr = time.split(":").map(num => parseInt(num));
+    return new Date(dateArr[0], dateArr[1] - 1, dateArr[2], timeArr[0], timeArr[1]);
+  };
 
   useEffect(() => {
     axios.get('/api/infraction_events/').then((res) => {
@@ -74,10 +82,8 @@ export default function ListInfractionEventsPage() {
       setInfractionEvents(
         allInfractionEvents.filter((event) => {
           const eventDate = new Date(event[filterObject.filterKey]);
-          const startDateArr = startDate.split("-").map(num => parseInt(num));
-          const endDateArr = endDate.split("-").map(num => parseInt(num));
-          const start = new Date(startDateArr[0], startDateArr[1] - 1, startDateArr[2]);
-          const end = new Date(endDateArr[0], endDateArr[1] - 1, endDateArr[2] + 1);
+          const start = parseDate(startDate, startDateTime);
+          const end = parseDate(endDate, endDateTime);
           return eventDate >= start && eventDate < end;
         })
       );
@@ -86,7 +92,7 @@ export default function ListInfractionEventsPage() {
         allInfractionEvents.filter(event => `${event[filterObject.filterKey].id}` === selectedFilterValue)
       );
     }
-  }, [selectedFilterValue, filter, allInfractionEvents, startDate, endDate])
+  }, [selectedFilterValue, filter, allInfractionEvents, startDate, endDate, endDateTime, startDateTime])
 
   const mapInfractionEventToTableRow = (infractionEvent) => (
     <tr key={infractionEvent.id}>
@@ -198,16 +204,28 @@ export default function ListInfractionEventsPage() {
               value={startDate}
               onChange={e => setStartDate(e.target.value)}
             />
+            <Label>Start Date Time</Label>
+            <Input
+              type="time"
+              value={startDateTime}
+              onChange={e => setStartDateTime(e.target.value)}
+            />
             <Label>End Date</Label>
             <Input
               type="date"
               value={endDate}
               onChange={e => setEndDate(e.target.value)}
             />
+            <Label>End Date Time</Label>
+            <Input
+              type="time"
+              value={endDateTime}
+              onChange={e => setEndDateTime(e.target.value)}
+            />
             {
-              new Date(startDate) > new Date(endDate) && (
+              parseDate(startDate, startDateTime) > parseDate(endDate, endDateTime) && (
                 <Alert className="mt-2" color="danger">
-                  Invalid Date Range
+                  Invalid date time range.
                 </Alert>
               )
             }
