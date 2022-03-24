@@ -1,12 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "util/axiosConfig";
 import { Spinner, Button, FormGroup, Label, Input } from "reactstrap";
-import {
-  overTimeGraph,
-  byLocationGraph,
-  byTypeGraph,
-  movingAverageGraph,
-} from "./helper";
+import { overTimeGraph, byLocationGraph, byTypeGraph } from "./helper";
 import ResourceNotFoundPage from "pages/ErrorPages/ResourceNotFoundPage";
 import {
   LineChart,
@@ -180,11 +175,7 @@ export default function DashboardPage() {
                 <XAxis dataKey="location" height={1} interval={0} />
                 <YAxis />
                 <Tooltip />
-                <Bar
-                  dataKey="Number of Infractions"
-                  fill="#82ca9d"
-                  barSize={100}
-                />
+                <Bar dataKey="Number of Infractions" fill="#82ca9d" barSize={100} />
               </BarChart>
             )) ||
             (graphType === "byType" && (
@@ -201,11 +192,7 @@ export default function DashboardPage() {
                 <XAxis dataKey="type" height={1} interval={0} />
                 <YAxis />
                 <Tooltip />
-                <Bar
-                  dataKey="Number of Infractions"
-                  fill="#82ca9d"
-                  barSize={100}
-                />
+                <Bar dataKey="Number of Infractions" fill="#82ca9d" barSize={100} />
               </BarChart>
             )) ||
             (graphType === "movingAverage" && (

@@ -23,8 +23,11 @@ export default function UpdateLocationPage() {
   };
 
   const errorAddDeviceToastContent = {
-    header: 'Device Could Not Be added',
-    body: 'Try again with a valid Device details',
+    header: 'Device Could Not Be Added',
+    body: `
+      Check to make sure you are using a valid device serial number.
+      If you recently deleted this device, try again in a couple of couple minutes.
+    `,
   };
 
   const deviceAlreadyAssignedToastContent = {
@@ -80,6 +83,7 @@ export default function UpdateLocationPage() {
   }
 
   const addDevice = () => {
+    setIsDeviceToastOpen(false);
     axios.get(`/api/devices/${serial_number}`).then((res) => {
       if (!res.data.location || res.data.location.toString() === locationId) {
         axios.patch(`/api/devices/${serial_number}`, {
