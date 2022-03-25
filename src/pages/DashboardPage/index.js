@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "util/axiosConfig";
 import { Spinner, Button, FormGroup, Label, Input } from "reactstrap";
-import { overTimeGraph, byLocationGraph, byTypeGraph } from "./helper";
+import { overTimeGraph, byLocationGraph, byTypeGraph, movingAverageGraph } from "./helper";
 import ResourceNotFoundPage from "pages/ErrorPages/ResourceNotFoundPage";
 import {
   LineChart,
