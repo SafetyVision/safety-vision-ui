@@ -2,7 +2,7 @@ export default function formatTimestamp(timestamp, type) {
   const date = new Date(timestamp)
 
   const months = [
-    'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'November', 'December'
+    'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
   ];
 
   const hours = date.getHours();

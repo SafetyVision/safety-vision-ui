@@ -84,6 +84,40 @@ const mapTimeSpanToDaysInt = {
   "year": 365,
 };
 
+const createMovingAverageTimeArray = (timeSpan, n) => {
+  let dates = [];
+  const today = new Date();
+
+  if (timeSpan === "month") {
+    for (let i = 30 + n; i >= 0; i--) {
+      let tempDate = new Date();
+      tempDate.setDate(today.getDate() - i);
+      dates.push(tempDate);
+    }
+  } else if (timeSpan === "year") {
+    for (let i = 12 + n; i >= 0; i--) {
+      let tempDate = new Date();
+      tempDate.setMonth(today.getMonth() - i);
+      dates.push(tempDate);
+    }
+  }
+
+  return dates;
+};
+
+const calculateMA = (data, i, n, k) => {
+  const arr = data
+    .map((d) => d["Number of Infractions"])
+    .slice(i - n, i + n + 1);
+  const testArray = data.slice(i - n, i + n + 1);
+  let movingAverage = 0;
+  movingAverage = arr.reduce((sum, n) => sum + n, 0);
+
+  movingAverage = movingAverage / k;
+
+  return movingAverage;
+};
+
 export const overTimeGraph = (timeSpan, infractionEvents) => {
   let dateArr = mapTimeSpanToCreateArrayFunction[timeSpan]();;
   let data = [];
@@ -141,7 +175,8 @@ export const byTypeGraph = (timeSpan, infractionEvents) => {
   const typeArr = [
     ...new Set(
       infractionEvents.map(
-        (infractionEvent) => infractionEvent.infraction_type.infraction_type_name
+        (infractionEvent) =>
+          infractionEvent.infraction_type.infraction_type_name
       )
     ),
   ];
@@ -169,3 +204,36 @@ export const byTypeGraph = (timeSpan, infractionEvents) => {
 
   return data;
 };
+
+export const movingAverageGraph = (timeSpan, infractionEvents) => {
+  let movingAverage = [];
+  const k = timeSpan === "year" ? 3 : 5;
+  const n = Math.floor(k / 2);
+
+  let dateArr = createMovingAverageTimeArray(timeSpan, n);
+  let data = [];
+
+  dateArr.forEach((date) => {
+    const tempData = infractionEvents
+      .filter((infractionEvent) => {
+        let newDate = new Date(infractionEvent.infraction_date_time);
+        return mapTimeSpanToTimeFilterFunction[timeSpan](date, newDate);
+      })
+      .reduce((acc) => acc + 1, 0);
+    data.push({
+      date: formatTimestamp(date, timeSpan),
+      "Number of Infractions": tempData,
+    });
+  });
+
+  data.forEach((point, index) => {
+    if (index >= n && index < data.length - n) {
+      movingAverage.push({
+        date: point.date,
+        "Moving Average": calculateMA(data, index, n, k),
+      });
+    }
+  });
+  return movingAverage;
+};
+
