@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Spinner, Button, Alert } from 'reactstrap';
 import BackButton from 'components/BackButton';
 import LiveFeed from 'components/LiveFeed';
+import { NotificationManager } from 'react-notifications';
 import { TrainingStatesVerbose, WaitingTrainingStates } from '../helper';
 
 export default function TrainInfractionsPage() {
@@ -48,7 +49,22 @@ export default function TrainInfractionsPage() {
     if (!sseConnection.current){
       const sseConnectionEndpoint =`/api/events/?channel=${params.deviceId}_${params.infractionId}_training_events`;
       sseConnection.current = new EventSource(sseConnectionEndpoint);
-      sseConnection.current.onmessage = () => {
+      sseConnection.current.onmessage = (event) => {
+        const { update } = JSON.parse(event);
+        if (update === 'model_needs_retraining') {
+          NotificationManager.info(
+            'Please restart the training process now, or exit this page.',
+            'Model Training Failed - Accuracy Too Low',
+            5000,
+          );
+          setIsComplete(false);
+        } else if (update === 'model_training_complete') {
+          NotificationManager.info(
+            'Your device is now detecting this infraction type.',
+            'Model Training Complete',
+            5000,
+          );
+        }
         axios.get(`/api/devices/${params.deviceId}/infraction_types/${params.infractionId}`).then((res) => {
           setTrainingModel(res.data);
           if (res.data.training_state === "done_not_committing_2" || res.data.training_state === "trained") {
