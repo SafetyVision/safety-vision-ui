@@ -50,7 +50,7 @@ export default function TrainInfractionsPage() {
       const sseConnectionEndpoint =`/api/events/?channel=${params.deviceId}_${params.infractionId}_training_events`;
       sseConnection.current = new EventSource(sseConnectionEndpoint);
       sseConnection.current.onmessage = (event) => {
-        const { update } = JSON.parse(event);
+        const { update } = JSON.parse(event.data);
         if (update === 'model_needs_retraining') {
           NotificationManager.info(
             'Please restart the training process now, or exit this page.',
