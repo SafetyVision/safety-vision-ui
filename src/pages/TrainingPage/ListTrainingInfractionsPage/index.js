@@ -3,6 +3,7 @@ import axios from 'util/axiosConfig';
 import { Spinner, Table, Button, Alert } from 'reactstrap';
 import { Link, useParams } from 'react-router-dom';
 import BackButton from 'components/BackButton';
+import { NotificationManager } from 'react-notifications';
 import { TrainingStates } from '../helper';
 
 export default function ListTrainingInfractionsPage() {
@@ -37,6 +38,34 @@ export default function ListTrainingInfractionsPage() {
     })
   };
 
+  const pauseTrainingModel = trainingModel => {
+    axios.post(
+      `/api/devices/${trainingModel.device}/infraction_types/${trainingModel.infraction_type}/stop_predict`,
+      {}).then(() => {
+        setTrainingModels(null);
+      }).catch(() => {
+        NotificationManager.error(
+          'Error pausing model prediction.',
+          'Could Not Pause Model',
+          5000,
+        );
+      });
+  };
+
+  const restartTrainingModel = trainingModel => {
+    axios.post(
+      `/api/devices/${trainingModel.device}/infraction_types/${trainingModel.infraction_type}/start_predict`,
+      {}).then(() => {
+        setTrainingModels(null);
+      }).catch(() => {
+        NotificationManager.error(
+          'Model prediction paused.',
+          'Success',
+          5000,
+        );
+      });
+  };
+
   const mapInfractionToTableRow = (trainingModel) => (
       <tr key={trainingModel.infraction_type}>
         <td className="align-middle">
@@ -50,7 +79,7 @@ export default function ListTrainingInfractionsPage() {
         </td>
         <td className="text-end align-middle">
           {
-            trainingModel.training_state !== 'trained' && (
+            trainingModel.training_state !== 'trained' ? (
               <Button
                 id={`trainButton${trainingModel.infraction_type}`}
                 className="w-100"
@@ -61,6 +90,24 @@ export default function ListTrainingInfractionsPage() {
               >
                 Train
               </Button>
+            ) : (
+              trainingModel.is_predicting ? (
+                <Button
+                  className="w-100"
+                  color="secondary"
+                  onClick={() => pauseTrainingModel(trainingModel)}
+                >
+                  Pause Prediction
+                </Button>
+              ) : (
+                <Button
+                  className="w-100"
+                  color="secondary"
+                  onClick={() => restartTrainingModel(trainingModel)}
+                >
+                  Restart Prediction
+                </Button>
+              )
             )
           }
         </td>
