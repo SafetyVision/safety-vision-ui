@@ -133,7 +133,7 @@ export default function DashboardPage() {
           </Input>
         </FormGroup>
       </div>
-      <div style={{ width: "100%", height: 800 }}>
+      <div style={{ width: "100%", height: 600 }}>
         <ResponsiveContainer width="100%">
           {(graphType === "overTime" && (
             <LineChart
