@@ -52,7 +52,7 @@ export default function TrainInfractionsPage() {
       sseConnection.current.onmessage = (event) => {
         const { update } = JSON.parse(event.data);
         if (update === 'model_needs_retraining') {
-          NotificationManager.info(
+          NotificationManager.error(
             'Please restart the training process now, or exit this page.',
             'Model Training Failed - Accuracy Too Low',
             5000,
